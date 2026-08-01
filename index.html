@@ -138,6 +138,32 @@
           <p class="hist-body">近年上交音乐厅、上音歌剧院相继落成，黑石公寓更新为书店与音乐空间，汾阳路乐器街与上方花园音乐广场共同生长——“音乐”成为这条街区的日常底色。</p>
         </div>
         <div class="footer-note">上方花园 · 音乐广场与各场地可在首页地图查看</div>
+
+        <div class="wall-head">
+          <div>
+            <div class="wall-title">街区影像墙</div>
+            <div class="wall-sub">街坊与乐迷拍摄的商店与演出瞬间</div>
+          </div>
+          <button class="wall-pub" id="btn-wall-pub">＋ 发布</button>
+        </div>
+        <div class="wall" id="wall-grid"></div>
+        <div class="footer-note">上传的照片与评论仅保存在本机（演示）· 当前图片为占位素材</div>
+      </div>
+    </div>
+
+    <!-- 影像墙发布弹层 -->
+    <div class="wall-mask" id="wall-modal" hidden>
+      <div class="wall-modal">
+        <div class="wm-head"><b>发布到影像墙</b><button class="wm-x" data-close="wall-modal">✕</button></div>
+        <div class="wm-imgpick" id="wm-imgpick">＋ 选择照片（商店 / 场地实拍）</div>
+        <input type="file" id="wm-file" accept="image/*" hidden>
+        <img class="wm-preview" id="wm-preview" hidden alt="预览">
+        <div class="wm-row">
+          <select id="wm-type" class="wm-sel"><option value="venue">演出场地</option><option value="shop">商店</option></select>
+          <select id="wm-target" class="wm-sel"></select>
+        </div>
+        <textarea id="wm-text" rows="3" maxlength="120" placeholder="写下你的评价或推荐…（选填）"></textarea>
+        <button class="wm-submit" id="wm-submit">发布</button>
       </div>
     </div>
 

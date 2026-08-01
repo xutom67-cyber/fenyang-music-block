@@ -9,4 +9,50 @@
     <text class="hist-body">{{item.body}}</text>
   </view>
   <view class="footer-note">上方花园 · 音乐广场与各场地可在首页地图查看</view>
+
+  <view class="wall-head">
+    <view>
+      <view class="wall-title">街区影像墙</view>
+      <view class="wall-sub">街坊与乐迷拍摄的商店与演出瞬间</view>
+    </view>
+    <view class="wall-pub" bindtap="openWall">＋ 发布</view>
+  </view>
+  <view class="wall">
+    <view class="wall-card" wx:for="{{posts}}" wx:key="id">
+      <view class="wall-img-wrap">
+        <image class="wall-img" src="{{item.img}}" mode="widthFix" lazy-load="{{true}}"></image>
+        <view class="wall-tag {{item.tagCls}}">{{item.tag}}</view>
+      </view>
+      <view class="wall-body">
+        <view class="wall-name">{{item.name}}</view>
+        <view class="wall-text" wx:if="{{item.text}}">{{item.text}}</view>
+        <view class="wall-foot">
+          <text class="wall-author">♪ {{item.author}}</text>
+          <text class="wall-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="footer-note">上传的照片与评论仅保存在本机（演示）· 当前图片为占位素材</view>
+
+  <!-- 发布弹层 -->
+  <view class="wall-mask" wx:if="{{wallOpen}}">
+    <view class="wall-modal">
+      <view class="wm-head">
+        <text class="wm-title">发布到影像墙</text>
+        <view class="wm-x" bindtap="closeWall">✕</view>
+      </view>
+      <view class="wm-imgpick" bindtap="chooseImg" wx:if="{{!imgPath}}">＋ 选择照片（商店 / 场地实拍）</view>
+      <image class="wm-preview" src="{{imgPath}}" mode="aspectFill" bindtap="chooseImg" wx:else></image>
+      <view class="wm-type-row">
+        <view class="wm-type {{type === 'venue' ? 'on' : ''}}" data-t="venue" bindtap="pickType">演出场地</view>
+        <view class="wm-type {{type === 'shop' ? 'on' : ''}}" data-t="shop" bindtap="pickType">商店</view>
+      </view>
+      <picker mode="selector" range="{{targetNames}}" value="{{targetIdx}}" bindchange="pickTarget">
+        <view class="wm-target">📍 {{targetNames[targetIdx] || '选择商店 / 场地'}}</view>
+      </picker>
+      <textarea class="wm-text" value="{{text}}" maxlength="120" placeholder="写下你的评价或推荐…（选填）" bindinput="onText"></textarea>
+      <view class="wm-submit" bindtap="submitPost">发布</view>
+    </view>
+  </view>
 </view>

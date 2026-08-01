@@ -884,3 +884,65 @@ a.edit-toggle { display: inline-flex; align-items: center; text-decoration: none
 @media (prefers-reduced-motion: reduce) {
   #map .venue-marker .vm-ring, .overlay, .sheet { animation: none !important; }
 }
+
+/* ================= 街区影像墙（Pinterest 瀑布流） ================= */
+.wall-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 16px 10px; }
+.wall-title { font-size: 16px; font-weight: 800; color: #1F2B23; }
+.wall-sub { font-size: 10.5px; color: #9AA49B; margin-top: 3px; }
+.wall-pub {
+  border: none; cursor: pointer; padding: 8px 16px; border-radius: 999px;
+  background: linear-gradient(135deg, #7FB69A, #5E9C80); color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(94,156,128,.3);
+}
+.wall-pub:active { transform: scale(.96); }
+.wall { column-count: 2; column-gap: 10px; padding: 4px 14px 8px; }
+.wall-card {
+  break-inside: avoid; margin-bottom: 10px; background: #fff;
+  border-radius: 14px; overflow: hidden; box-shadow: 0 4px 14px rgba(47,63,53,.07);
+}
+.wall-img-wrap { position: relative; }
+.wall-img { width: 100%; display: block; }
+.wall-tag {
+  position: absolute; top: 8px; left: 8px; font-size: 10px; font-weight: 700;
+  color: #fff; padding: 3px 9px; border-radius: 999px; letter-spacing: .5px;
+}
+.wall-tag.vt { background: rgba(94,156,128,.92); }
+.wall-tag.st { background: rgba(168,123,60,.92); }
+.wall-body { padding: 9px 11px 10px; }
+.wall-name { font-size: 12.5px; font-weight: 700; color: #2F3F35; }
+.wall-text { font-size: 11.5px; color: #5F6B62; line-height: 1.6; margin-top: 4px; }
+.wall-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.wall-author { font-size: 10px; color: #4F8F71; font-weight: 600; }
+.wall-time { font-size: 9.5px; color: #B0B9B0; }
+.wall-mask {
+  position: fixed; inset: 0; background: rgba(23,32,27,.5); z-index: 200;
+  display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px);
+}
+.wall-modal {
+  width: 320px; max-height: 82vh; overflow-y: auto; background: #fff;
+  border-radius: 18px; padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.wm-head { display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #1F2B23; }
+.wm-x { border: none; background: #F0F2EE; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; color: #6E7A71; font-size: 12px; }
+.wm-imgpick {
+  margin-top: 12px; border: 1.6px dashed #C9D6CC; border-radius: 12px; padding: 22px 10px;
+  text-align: center; color: #4F8F71; font-size: 12.5px; cursor: pointer; background: #F6FAF5;
+}
+.wm-preview { margin-top: 12px; width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; cursor: pointer; }
+.wm-row { display: flex; gap: 8px; margin-top: 12px; }
+.wm-sel {
+  flex: 1; border: 1.4px solid #E2E8E0; border-radius: 10px; padding: 9px 8px;
+  font-size: 12.5px; color: #2F3F35; background: #fff;
+}
+.wm-modal textarea, .wall-modal textarea {
+  width: 100%; box-sizing: border-box; margin-top: 10px; border: 1.4px solid #E2E8E0;
+  border-radius: 10px; padding: 10px; font-size: 12.5px; color: #2F3F35;
+  font-family: inherit; resize: none; line-height: 1.6;
+}
+.wm-submit {
+  width: 100%; margin-top: 12px; border: none; cursor: pointer; padding: 12px 0;
+  border-radius: 12px; background: linear-gradient(135deg, #7FB69A, #5E9C80);
+  color: #fff; font-size: 14px; font-weight: 800; letter-spacing: 2px;
+}
+.wm-submit:active { transform: scale(.98); }

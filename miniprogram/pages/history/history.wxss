@@ -10,3 +10,61 @@ page { background: #F4F7F2; }
 .hist-title::before { content: ""; position: absolute; left: 0; top: 6rpx; bottom: 6rpx; width: 7rpx; border-radius: 4rpx; background: #7FB69A; }
 .hist-body { display: block; font-size: 24rpx; line-height: 1.9; color: #5F6B62; margin-top: 16rpx; }
 .footer-note { text-align: center; font-size: 20rpx; color: #A9B2AA; margin: 40rpx 40rpx 0; line-height: 1.7; }
+
+/* ============ 街区影像墙（Pinterest 瀑布流） ============ */
+.wall-head { display: flex; justify-content: space-between; align-items: center; padding: 36rpx 32rpx 18rpx; }
+.wall-title { font-size: 32rpx; font-weight: 800; color: #1F2B23; }
+.wall-sub { font-size: 21rpx; color: #9AA49B; margin-top: 4rpx; }
+.wall-pub {
+  padding: 12rpx 32rpx; border-radius: 999rpx;
+  background: linear-gradient(135deg, #7FB69A, #5E9C80); color: #fff;
+  font-size: 24rpx; font-weight: 700; letter-spacing: 1rpx;
+  box-shadow: 0 6rpx 20rpx rgba(94,156,128,.30);
+}
+.wall { column-count: 2; column-gap: 16rpx; padding: 4rpx 24rpx 10rpx; }
+.wall-card { break-inside: avoid; margin-bottom: 16rpx; background: #fff; border-radius: 24rpx; overflow: hidden; box-shadow: 0 6rpx 20rpx rgba(47,63,53,.07); }
+.wall-img-wrap { position: relative; }
+.wall-img { width: 100%; display: block; }
+.wall-tag {
+  position: absolute; top: 12rpx; left: 12rpx; font-size: 19rpx; font-weight: 700;
+  color: #fff; padding: 5rpx 16rpx; border-radius: 999rpx; letter-spacing: 1rpx;
+}
+.wall-tag.vt { background: rgba(94,156,128,.92); }
+.wall-tag.st { background: rgba(168,123,60,.92); }
+.wall-body { padding: 16rpx 20rpx 18rpx; }
+.wall-name { font-size: 25rpx; font-weight: 700; color: #2F3F35; }
+.wall-text { font-size: 22rpx; color: #5F6B62; line-height: 1.6; margin-top: 8rpx; }
+.wall-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 14rpx; }
+.wall-author { font-size: 19rpx; color: #4F8F71; font-weight: 600; }
+.wall-time { font-size: 18rpx; color: #B0B9B0; }
+
+/* 发布弹层 */
+.wall-mask { position: fixed; inset: 0; background: rgba(23,32,27,.5); z-index: 200; display: flex; align-items: center; justify-content: center; }
+.wall-modal { width: 640rpx; max-height: 80vh; overflow-y: auto; background: #fff; border-radius: 32rpx; padding: 32rpx; box-shadow: 0 20rpx 60rpx rgba(0,0,0,.3); }
+.wm-head { display: flex; justify-content: space-between; align-items: center; }
+.wm-title { font-size: 30rpx; font-weight: 800; color: #1F2B23; }
+.wm-x { width: 52rpx; height: 52rpx; background: #F0F2EE; border-radius: 50%; color: #6E7A71; font-size: 24rpx; display: flex; align-items: center; justify-content: center; }
+.wm-imgpick {
+  margin-top: 24rpx; border: 3rpx dashed #C9D6CC; border-radius: 22rpx; padding: 44rpx 20rpx;
+  text-align: center; color: #4F8F71; font-size: 25rpx; background: #F6FAF5;
+}
+.wm-preview { margin-top: 24rpx; width: 100%; height: 300rpx; object-fit: cover; border-radius: 22rpx; }
+.wm-type-row { display: flex; gap: 16rpx; margin-top: 24rpx; }
+.wm-type {
+  flex: 1; text-align: center; padding: 16rpx 0; border-radius: 18rpx; font-size: 24rpx; font-weight: 600;
+  border: 2rpx solid #E2E8E0; color: #8B968E; background: #fff;
+}
+.wm-type.on { border-color: #5E9C80; background: #F0F7EF; color: #3E7A5F; font-weight: 800; }
+.wm-target {
+  margin-top: 20rpx; border: 2rpx solid #E2E8E0; border-radius: 18rpx; padding: 20rpx 24rpx;
+  font-size: 25rpx; color: #2F3F35; background: #fff;
+}
+.wm-text {
+  width: 100%; box-sizing: border-box; margin-top: 20rpx; border: 2rpx solid #E2E8E0;
+  border-radius: 18rpx; padding: 20rpx 24rpx; font-size: 25rpx; color: #2F3F35; height: 160rpx; line-height: 1.6;
+}
+.wm-submit {
+  margin-top: 28rpx; padding: 24rpx 0; border-radius: 22rpx; text-align: center;
+  background: linear-gradient(135deg, #7FB69A, #5E9C80); color: #fff;
+  font-size: 28rpx; font-weight: 800; letter-spacing: 4rpx;
+}

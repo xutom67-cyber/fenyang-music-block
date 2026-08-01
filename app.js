@@ -1586,9 +1586,107 @@ function toast(msg) {
   toastTimer = setTimeout(() => { t.hidden = true; }, 1800);
 }
 
+/* ================= 街区影像墙（Pinterest 瀑布流） ================= */
+const WALL_KEY = 'fy_wall_v1';
+const WALL_SEED = [
+  { img: 'images/wall/w01-concert-stage.jpg', type: 'venue', key: 'sso-hall', text: '上交的贝九，弦乐一进来整个人都起鸡皮疙瘩', author: '乐迷·小林', ago: 2 },
+  { img: 'images/wall/w02-dj-lights.jpg', type: 'venue', key: 'shangfang-plaza', text: '周五晚上的广场演出，灯光和梧桐树影叠在一起', author: '街坊老王', ago: 5 },
+  { img: 'images/wall/w03-concert-crowd.jpg', type: 'venue', key: 'sy-opera', text: '《茶花女》散场，人群迟迟不走', author: '上音学生·阿哲', ago: 9 },
+  { img: 'images/wall/w04-singer.jpg', type: 'venue', key: 'he-luting', text: '声乐专场，唱功是真的顶', author: '乐迷·阿May', ago: 26 },
+  { img: 'images/wall/w05-piano.jpg', type: 'shop', key: 'yinyue-book', text: '在音乐书店翻到绝版乐谱，店员说可以慢慢看', author: '旅人S', ago: 30 },
+  { img: 'images/wall/w06-piano-keys.jpg', type: 'shop', key: 'zhiyin', text: '试琴试了半小时，老板也没催，汾阳路的老店就是这样', author: '琴童妈妈', ago: 50 },
+  { img: 'images/wall/w07-vinyl.jpg', type: 'shop', key: 'xingfu', text: '黑石公寓里的幸福集荟，黑胶区一待就是一个下午', author: '乐迷·小林', ago: 53 },
+  { img: 'images/wall/w08-cafe.jpg', type: 'shop', key: 'yongkang-cafe', text: '手冲配爵士，永康路的下午值得浪费', author: '咖啡客·Luna', ago: 72 },
+  { img: 'images/wall/w09-cafe-interior.jpg', type: 'shop', key: 'nongtang-cafe', text: '弄堂深处的咖啡馆，安静到能听见磨豆声', author: '街坊老王', ago: 95 },
+  { img: 'images/wall/w10-coffee.jpg', type: 'shop', key: 'huayuan-rest', text: '花园小馆的露台位，梧桐绿荫里吃午饭', author: '旅人S', ago: 120 },
+  { img: 'images/wall/w11-interior.jpg', type: 'shop', key: 'dongping', text: '东平路的小酒馆，晚风正好', author: '阿哲', ago: 140 },
+  { img: 'images/wall/w12-library.jpg', type: 'shop', key: 'xingfu', text: '书店的拱廊太好拍了，光影绝了', author: '摄影·Ken', ago: 168 },
+  { img: 'images/wall/w13-books.jpg', type: 'shop', key: 'yinyue-book', text: '乐谱区，考研那阵子常来，老板都认识我了', author: '琴童妈妈', ago: 190 },
+  { img: 'images/wall/w14-reading.jpg', type: 'venue', key: 'blackstone', text: '黑石公寓一层的书店区，历史感全在里面', author: '乐迷·阿May', ago: 210 },
+  { img: 'images/wall/w15-building.jpg', type: 'venue', key: 'blackstone', text: '黑石公寓外立面，1924 年的老房子', author: '摄影·Ken', ago: 240 },
+  { img: 'images/wall/w16-street.jpg', type: 'venue', key: 'pushkin', text: '普希金雕像前的街角，永远有人停下来', author: '街坊老王', ago: 280 }
+];
+let WALL_POSTS = [];
+
+function wallName(type, key) {
+  if (type === 'venue') { const v = D.venues.find(x => x.id === key); return v ? v.name : key; }
+  const s = D.shops[key]; return s ? s.name : key;
+}
+function wallTime(agoH) { return agoH < 1 ? '刚刚' : agoH < 24 ? Math.floor(agoH) + ' 小时前' : Math.floor(agoH / 24) + ' 天前'; }
+function wallLoad() {
+  const saved = loadJSON(WALL_KEY, null);
+  if (saved && saved.length) return saved;
+  return WALL_SEED.map((p, i) => ({ id: 'seed' + i, img: p.img, type: p.type, key: p.key, text: p.text, author: p.author, ts: Date.now() - p.ago * 3600000 }));
+}
+function wallSave(posts) { localStorage.setItem(WALL_KEY, JSON.stringify(posts)); }
+function renderWall() {
+  const g = $('#wall-grid');
+  g.innerHTML = WALL_POSTS.map(p => {
+    const name = wallName(p.type, p.key);
+    const tag = p.type === 'venue' ? '演出场地' : '商店';
+    return `<div class="wall-card">
+      <div class="wall-img-wrap"><img class="wall-img" src="${esc(p.img)}" alt="${esc(name)}" loading="lazy">
+        <span class="wall-tag ${p.type === 'venue' ? 'vt' : 'st'}">${tag}</span></div>
+      <div class="wall-body">
+        <div class="wall-name">${esc(name)}</div>
+        ${p.text ? `<div class="wall-text">${esc(p.text)}</div>` : ''}
+        <div class="wall-foot"><span class="wall-author">♪ ${esc(p.author)}</span><span class="wall-time">${wallTime((Date.now() - p.ts) / 3600000)}</span></div>
+      </div></div>`;
+  }).join('');
+}
+function wallFillTargets() {
+  const t = $('#wm-type').value;
+  const opts = t === 'venue'
+    ? D.venues.map(v => ({ key: v.id, name: v.name }))
+    : Object.entries(D.shops).map(([k, s]) => ({ key: k, name: s.name }));
+  $('#wm-target').innerHTML = opts.map(o => `<option value="${o.key}">${o.name}</option>`).join('');
+}
+function wallOpen() {
+  wallFillTargets();
+  $('#wm-file').value = '';
+  $('#wm-text').value = '';
+  $('#wm-preview').hidden = true;
+  $('#wm-imgpick').hidden = false;
+  $('#wall-modal').hidden = false;
+}
+function wallInit() {
+  WALL_POSTS = wallLoad();
+  renderWall();
+  $('#btn-wall-pub').addEventListener('click', wallOpen);
+  $('#wm-type').addEventListener('change', wallFillTargets);
+  $('#wm-imgpick').addEventListener('click', () => $('#wm-file').click());
+  $('#wm-preview').addEventListener('click', () => $('#wm-file').click());
+  $('#wm-file').addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => {
+      $('#wm-preview').src = rd.result;
+      $('#wm-preview').hidden = false;
+      $('#wm-imgpick').hidden = true;
+    };
+    rd.readAsDataURL(f);
+  });
+  $('#wm-submit').addEventListener('click', () => {
+    const img = $('#wm-preview').src;
+    if (!img) { toast('请先选择一张照片'); return; }
+    const prof = loadJSON('fy_profile_v1', null);
+    const post = {
+      id: 'u' + Date.now(), img, type: $('#wm-type').value, key: $('#wm-target').value,
+      text: $('#wm-text').value.trim(), author: (prof && prof.name) || '汾阳乐迷', ts: Date.now()
+    };
+    WALL_POSTS.unshift(post);
+    wallSave(WALL_POSTS);
+    renderWall();
+    $('#wall-modal').hidden = true;
+    toast('已发布到影像墙 ✓');
+  });
+}
+
 /* ================= 初始化 ================= */
 function init() {
   renderMap();
+  wallInit();
   if (editState && editState.view) Object.assign(view, editState.view);
   applyView();
   renderVenueCards();
