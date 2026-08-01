@@ -68,3 +68,43 @@ page { background: #F4F7F2; }
   background: linear-gradient(135deg, #7FB69A, #5E9C80); color: #fff;
   font-size: 28rpx; font-weight: 800; letter-spacing: 4rpx;
 }
+
+/* 历史卡 + 详情 */
+.wall-tag.ht { background: rgba(63,79,110,.9); }
+.hist-detail-img { margin-top: 24rpx; width: 100%; border-radius: 22rpx; }
+.hist-detail-body { display: block; font-size: 25rpx; line-height: 1.9; color: #4A5A50; margin-top: 24rpx; }
+
+/* 帖子详情（互动） */
+.post-img { margin-top: 24rpx; width: 100%; border-radius: 22rpx; }
+.post-meta { display: flex; align-items: center; gap: 16rpx; margin-top: 20rpx; flex-wrap: wrap; }
+.post-meta .wall-tag { position: static; }
+.post-author { font-size: 24rpx; font-weight: 700; color: #4F8F71; }
+.post-time { font-size: 20rpx; color: #B0B9B0; }
+.post-text { display: block; font-size: 26rpx; line-height: 1.8; color: #2F3F35; margin-top: 20rpx; }
+.post-actions { display: flex; gap: 16rpx; margin-top: 24rpx; }
+.post-like {
+  padding: 12rpx 32rpx; border-radius: 999rpx; font-size: 24rpx; color: #C96A5E;
+  border: 2rpx solid #E2E8E0; background: #fff; font-weight: 700;
+}
+.post-like.on { border-color: #E8B4AC; background: #FDF3F1; }
+.post-go {
+  padding: 12rpx 32rpx; border-radius: 999rpx; font-size: 24rpx; font-weight: 700;
+  background: linear-gradient(135deg, #7FB69A, #5E9C80); color: #fff;
+}
+.post-comments { margin-top: 24rpx; border-top: 3rpx dashed #E2E8E0; padding-top: 20rpx; max-height: 420rpx; overflow-y: auto; }
+.pcomment { padding: 16rpx 20rpx; border-radius: 18rpx; background: #F7FAF6; margin-bottom: 14rpx; font-size: 23rpx; line-height: 1.6; }
+.pcomment.reply { margin-left: 34rpx; background: #F3F6F2; }
+.pcomment.empty { background: none; text-align: center; color: #B0B9B0; }
+.pc-author { font-weight: 700; color: #4F8F71; margin-right: 10rpx; }
+.pc-reply { color: #9AA49B; font-size: 21rpx; margin-right: 10rpx; }
+.pc-text { color: #3A463F; }
+.pc-time { float: right; color: #B0B9B0; font-size: 19rpx; margin-top: 2rpx; }
+.post-input-row { display: flex; gap: 14rpx; margin-top: 20rpx; position: sticky; bottom: -32rpx; background: #fff; padding-top: 18rpx; z-index: 2; }
+.post-input {
+  flex: 1; border: 2rpx solid #E2E8E0; border-radius: 999rpx; padding: 16rpx 28rpx;
+  font-size: 24rpx; color: #2F3F35; background: #F7FAF6; height: 72rpx;
+}
+.post-send {
+  padding: 0 36rpx; border-radius: 999rpx; background: #5E9C80; color: #fff;
+  font-size: 25rpx; font-weight: 700; display: flex; align-items: center;
+}

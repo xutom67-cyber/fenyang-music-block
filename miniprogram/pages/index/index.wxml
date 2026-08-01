@@ -50,7 +50,7 @@
   </view>
 
   <view class="home-entries">
-    <view class="he" data-go="history" bindtap="goEntry"><view class="he-ic">▤</view><text>历史</text></view>
+    <view class="he" data-go="history" bindtap="goEntry"><view class="he-ic">▤</view><text>社区</text></view>
     <view class="he" data-go="venues" bindtap="goEntry"><view class="he-ic">♪</view><text>场地</text></view>
     <view class="he" data-go="shops" bindtap="goEntry"><view class="he-ic">◍</view><text>商店</text></view>
     <view class="he" data-go="profile" bindtap="goEntry"><view class="he-ic">◉</view><text>我的</text></view>

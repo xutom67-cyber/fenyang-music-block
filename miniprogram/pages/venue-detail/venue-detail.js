@@ -8,7 +8,10 @@ Page({
     this.vid = options.id;
     const v = FY.venues.find(x => x.id === this.vid);
     this.v = v;
-    this.setData({ statusBarH: info.statusBarHeight || 20 });
+    this.setData({
+      statusBarH: info.statusBarHeight || 20,
+      street: util.STREET_MAP[this.vid] || ''
+    });
     this.buildVenue();
     this.refreshPerfs();
     this.timer = setInterval(() => this.refreshPerfs(), 1000);

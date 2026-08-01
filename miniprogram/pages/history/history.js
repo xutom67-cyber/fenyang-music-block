@@ -20,6 +20,33 @@ const SEED = [
   { img: '/images/wall/w16-street.jpg', type: 'venue', key: 'pushkin', text: '普希金雕像前的街角，永远有人停下来', author: '街坊老王', ago: 280 }
 ];
 const WALL_KEY = 'fy_wall_v1';
+const CMT_KEY = 'fy_wall_cmts_v1', LIKE_KEY = 'fy_wall_likes_v1';
+
+/* 衡复历史沿革卡片（社区页置顶，点击查看全文） */
+const HIST_CARDS = [
+  { title: '百年衡复', img: '/images/wall/w15-building.jpg', body: '该地块隶属衡山路—复兴路历史文化风貌区，源自法租界时期的“西区”。1920—1930 年代，花园住宅、高级公寓与梧桐林荫道在此大量兴建，至今仍是上海历史风貌保存最完整的街区之一。梧桐掩映下，武康路、汾阳路、复兴中路连缀成片的老洋房与里弄，是近代上海城市生活最精致的样本。' },
+  { title: '音乐学府', img: '/images/wall/w05-piano.jpg', body: '上海音乐学院源自 1927 年创办的国立音乐院，是中国第一所独立建制的高等音乐学府，萧友梅、贺绿汀等音乐家先后在此执教。汾阳路校区坐落于地块东侧、紧邻汾阳路，校园内绿树掩映、琴声不绝，傍晚路过常能听见从琴房传来的练习曲。' },
+  { title: '花园里弄', img: '/images/wall/w09-cafe-interior.jpg', body: '上方花园与相邻的新康花园均为 1930 年代建成的花园住宅小区，红瓦坡顶、庭院错落，是典型的近代花园里弄。如今新康花园的别墅陆续改造为工作坊、餐厅与咖啡馆，老洋房的新生让历史街区保持日常的烟火气。' },
+  { title: '音乐街区', img: '/images/wall/w16-street.jpg', body: '近年上交音乐厅、上音歌剧院相继落成，黑石公寓更新为书店与音乐空间，汾阳路乐器街与上方花园音乐广场共同生长——“音乐”成为这条街区的日常底色。从琴行试琴声到广场周末演出，衡复的每一处角落都在发生音乐。' }
+];
+
+const CMT_SEED = {
+  seed0: [
+    { author: '街坊老王', text: '上周刚去听过一次，音效真的震撼', replyTo: null },
+    { author: '乐迷·小林', text: '同感！建议买二楼中排', replyTo: '街坊老王' }
+  ],
+  seed6: [
+    { author: '旅人S', text: '黑胶区每周四上新，蹲了很久了', replyTo: null },
+    { author: '琴童妈妈', text: '小朋友在那里第一次听黑胶，特别喜欢', replyTo: null }
+  ],
+  seed1: [
+    { author: '摄影·Ken', text: '灯光真的绝，拍照出片', replyTo: null },
+    { author: '街坊老王', text: '每周五都有，欢迎来玩', replyTo: '摄影·Ken' }
+  ],
+  hist1: [{ author: '上音学生·阿哲', text: '每天路过琴房都听到练琴声，太幸福了', replyTo: null }],
+  hist0: [{ author: '旅人S', text: '武康路和汾阳路这段真的值得慢慢走', replyTo: null }]
+};
+const LIKE_SEED = { seed0: true, seed6: true, seed1: true, hist1: true };
 
 function wallTime(ts) {
   const h = (Date.now() - ts) / 3600000;
@@ -46,7 +73,13 @@ Page({
     targetNames: [],
     targetIdx: 0,
     text: '',
-    imgPath: ''
+    imgPath: '',
+    postDetail: null,
+    cmts: [],
+    liked: false,
+    likeCount: 0,
+    cmtInput: '',
+    cmtPlaceholder: '说点什么…（点评论可回复）'
   },
   onLoad() {
     const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
@@ -56,16 +89,103 @@ Page({
       this.raw = SEED.map((p, i) => ({ id: 'seed' + i, img: p.img, type: p.type, key: p.key, text: p.text, author: p.author, ts: Date.now() - p.ago * 3600000 }));
       util.save(WALL_KEY, this.raw);
     }
+    this.cmtsStore = util.load(CMT_KEY, null);
+    if (!this.cmtsStore) {
+      this.cmtsStore = {};
+      for (const pid in CMT_SEED) this.cmtsStore[pid] = CMT_SEED[pid].map(c => ({ ...c, ts: Date.now() - Math.floor(Math.random() * 48 + 2) * 3600000 }));
+      util.save(CMT_KEY, this.cmtsStore);
+    }
+    this.likesStore = util.load(LIKE_KEY, null) || { ...LIKE_SEED };
+    if (!util.load(LIKE_KEY, null)) util.save(LIKE_KEY, this.likesStore);
+    this.curPid = null;
+    this.replyTo = null;
     this.renderPosts();
   },
+  cmtCount(pid) { const c = this.cmtsStore[pid]; return c ? c.length : 0; },
   renderPosts() {
+    const hist = HIST_CARDS.map((h, i) => ({
+      id: 'hist' + i, pid: 'hist' + i, img: h.img, name: h.title,
+      tag: '街区历史', tagCls: 'ht',
+      text: h.body.length > 52 ? h.body.slice(0, 52) + '…' : h.body,
+      author: '汾阳路音乐街区', time: '沿革 · ' + this.cmtCount('hist' + i) + ' 评论'
+    }));
     const posts = this.raw.map(p => ({
-      id: p.id, img: p.img, name: targetName(p.type, p.key),
+      id: p.id, pid: p.id, img: p.img, name: targetName(p.type, p.key),
       tag: p.type === 'venue' ? '演出场地' : '商店',
       tagCls: p.type === 'venue' ? 'vt' : 'st',
-      text: p.text, author: p.author, time: wallTime(p.ts)
+      text: p.text, author: p.author,
+      time: wallTime(p.ts) + ' · ' + this.cmtCount(p.id) + ' 评论'
     }));
-    this.setData({ posts });
+    this.setData({ posts: hist.concat(posts) });
+  },
+  /* ----- 帖子详情与互动 ----- */
+  onCardTap(e) {
+    this.openPost(e.currentTarget.dataset.pid);
+  },
+  openPost(pid) {
+    this.curPid = pid;
+    this.replyTo = null;
+    let detail;
+    if (pid.indexOf('hist') === 0) {
+      const h = HIST_CARDS[Number(pid.slice(4))];
+      detail = { name: h.title, img: h.img, tag: '街区历史', tagCls: 'ht', text: h.body, author: '汾阳路音乐街区', time: '沿革', canGo: false };
+    } else {
+      const p = this.raw.find(x => x.id === pid);
+      if (!p) return;
+      detail = {
+        name: targetName(p.type, p.key), img: p.img,
+        tag: p.type === 'venue' ? '演出场地' : '商店',
+        tagCls: p.type === 'venue' ? 'vt' : 'st',
+        text: p.text || '', author: p.author, time: wallTime(Date.now() - p.ts),
+        canGo: true, kind: p.type, key: p.key
+      };
+    }
+    this.setData({ postDetail: detail });
+    this.refreshCmts();
+  },
+  refreshCmts() {
+    const list = (this.cmtsStore[this.curPid] || []).slice().reverse().map(c => ({
+      author: c.author, replyTo: c.replyTo, text: c.text, time: wallTime(Date.now() - c.ts), ts: c.ts
+    }));
+    const base = (this.curPid.length * 7) % 6 + 2;
+    this.setData({
+      cmts: list,
+      liked: !!this.likesStore[this.curPid],
+      likeCount: base + (this.likesStore[this.curPid] ? 1 : 0),
+      cmtInput: '',
+      cmtPlaceholder: '说点什么…（点评论可回复）'
+    });
+  },
+  closePost() { this.setData({ postDetail: null }); },
+  replyToCmt(e) {
+    this.replyTo = e.currentTarget.dataset.author;
+    this.setData({ cmtPlaceholder: '回复 @' + this.replyTo + '：' });
+  },
+  onCmtInput(e) { this.setData({ cmtInput: e.detail.value }); },
+  addComment() {
+    const text = this.data.cmtInput.trim();
+    if (!text || !this.curPid) return;
+    const prof = getApp().globalData.profile;
+    const c = { author: (prof && prof.name) || '汾阳乐迷', text, replyTo: this.replyTo, ts: Date.now() };
+    if (!this.cmtsStore[this.curPid]) this.cmtsStore[this.curPid] = [];
+    this.cmtsStore[this.curPid].push(c);
+    util.save(CMT_KEY, this.cmtsStore);
+    this.replyTo = null;
+    this.refreshCmts();
+    this.renderPosts();
+  },
+  toggleLike() {
+    if (!this.curPid) return;
+    this.likesStore[this.curPid] = !this.likesStore[this.curPid];
+    util.save(LIKE_KEY, this.likesStore);
+    this.refreshCmts();
+  },
+  goPlace() {
+    const d = this.data.postDetail;
+    if (!d || !d.canGo) return;
+    this.setData({ postDetail: null });
+    if (d.kind === 'venue') wx.navigateTo({ url: '/pages/venue-detail/venue-detail?id=' + d.key });
+    else wx.navigateTo({ url: '/pages/shop-detail/shop-detail?id=' + d.key });
   },
   /* ----- 发布 ----- */
   openWall() {

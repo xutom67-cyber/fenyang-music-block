@@ -91,7 +91,7 @@
       <div class="home-dots" id="home-dots"></div>
 
       <div class="home-entries">
-        <button class="he" data-go="project"><i>▤</i><span>历史</span></button>
+        <button class="he" data-go="project"><i>▤</i><span>社区</span></button>
         <button class="he" data-go="venues"><i>♪</i><span>场地</span></button>
         <button class="he" data-go="shops"><i>◍</i><span>商店</span></button>
         <button class="he" data-go="profile"><i>◉</i><span>我的</span></button>
@@ -110,39 +110,17 @@
       <div class="home-tip">♪ 汾阳路 · 音乐正在发生</div>
     </div>
 
-    <!-- ==================== 二级页面：场地历史介绍 ==================== -->
+    <!-- ==================== 二级页面：社区（历史沿革 + 街区影像墙） ==================== -->
     <div class="screen" id="screen-project" hidden>
       <div class="page-sub">
-        <div class="sub-title">场地历史介绍</div>
+        <div class="sub-title">社区</div>
         <span class="sub-spacer"></span>
       </div>
       <div class="sub-body">
-        <div class="hist-img-wrap">
-          <img class="hist-img" src="images/overview-render.jpg" alt="鸟瞰效果图" loading="lazy">
-          <div class="hist-img-cap">鸟瞰效果图 · 音乐街区更新方案</div>
-        </div>
-        <div class="hist-sec">
-          <div class="hist-title">百年衡复</div>
-          <p class="hist-body">该地块隶属衡山路—复兴路历史文化风貌区，源自法租界时期的“西区”。1920—1930 年代，花园住宅、高级公寓与梧桐林荫道在此大量兴建，至今仍是上海历史风貌保存最完整的街区之一。</p>
-        </div>
-        <div class="hist-sec">
-          <div class="hist-title">音乐学府</div>
-          <p class="hist-body">上海音乐学院源自 1927 年创办的国立音乐院，是中国第一所独立建制的高等音乐学府。汾阳路校区坐落于地块东侧、紧邻汾阳路，校园内绿树掩映、琴声不绝。</p>
-        </div>
-        <div class="hist-sec">
-          <div class="hist-title">花园里弄</div>
-          <p class="hist-body">上方花园与相邻的新康花园均为 1930 年代建成的花园住宅小区，红瓦坡顶、庭院错落。如今新康花园的别墅陆续改造为工作坊、餐厅与咖啡馆，成为街区日常的一部分。</p>
-        </div>
-        <div class="hist-sec">
-          <div class="hist-title">音乐街区</div>
-          <p class="hist-body">近年上交音乐厅、上音歌剧院相继落成，黑石公寓更新为书店与音乐空间，汾阳路乐器街与上方花园音乐广场共同生长——“音乐”成为这条街区的日常底色。</p>
-        </div>
-        <div class="footer-note">上方花园 · 音乐广场与各场地可在首页地图查看</div>
-
         <div class="wall-head">
           <div>
             <div class="wall-title">街区影像墙</div>
-            <div class="wall-sub">街坊与乐迷拍摄的商店与演出瞬间</div>
+            <div class="wall-sub">衡复沿革 · 街坊与乐迷拍摄的商店与演出瞬间</div>
           </div>
           <button class="wall-pub" id="btn-wall-pub">＋ 发布</button>
         </div>
@@ -150,6 +128,32 @@
         <div class="footer-note">上传的照片与评论仅保存在本机（演示）· 当前图片为占位素材</div>
       </div>
     </div>
+
+    <!-- 帖子详情弹层（互动：点赞 / 评论 / 回复） -->
+    <div class="wall-mask" id="post-modal" hidden>
+      <div class="wall-modal">
+        <div class="wm-head"><b id="post-title">帖子</b><button class="wm-x" data-close="post-modal">✕</button></div>
+        <img class="post-img" id="post-img" alt="">
+        <div class="post-meta">
+          <span class="wall-tag vt" id="post-tag">演出场地</span>
+          <span class="post-author" id="post-author"></span>
+          <span class="post-time" id="post-time"></span>
+        </div>
+        <p class="post-text" id="post-text"></p>
+        <div class="post-actions">
+          <button class="post-like" id="post-like">♡ 0</button>
+          <button class="post-go" id="post-go" hidden>查看场所 ›</button>
+        </div>
+        <div class="post-comments" id="post-comments"></div>
+        <div class="post-input-row">
+          <input id="post-input" maxlength="80" placeholder="说点什么…（点评论可回复）">
+          <button class="post-send" id="post-send">发送</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 衡复历史详情弹层（已并入帖子详情） -->
+    <!-- 帖子详情弹层见上方 -->
 
     <!-- 影像墙发布弹层 -->
     <div class="wall-mask" id="wall-modal" hidden>
@@ -251,6 +255,7 @@
         <span class="sub-spacer"></span>
       </div>
       <div class="sub-body">
+        <img class="street-img" id="venue-street" src="" alt="街景">
         <div class="venue-hero">
           <span class="hero-glyph" id="venue-glyph">剧</span>
           <div class="hero-info">
@@ -328,6 +333,8 @@
       <div class="sheet">
         <div class="sheet-grab"></div>
         <button class="sheet-close" data-close="shop-modal">✕</button>
+
+        <img class="street-img" id="shop-street" src="" alt="街景">
 
         <div class="mini-map-wrap">
           <svg id="shop-minimap" viewBox="0 0 760 880" preserveAspectRatio="xMidYMid meet"></svg>
@@ -459,7 +466,7 @@
     <!-- ==================== 底部标签导航 ==================== -->
     <nav class="tabbar" id="tabbar">
       <button class="tab on" data-tab="main"><i>◫</i><span>首页</span></button>
-      <button class="tab" data-tab="project"><i>▤</i><span>历史</span></button>
+      <button class="tab" data-tab="project"><i>▤</i><span>社区</span></button>
       <button class="tab" data-tab="venues"><i>♪</i><span>场地</span></button>
       <button class="tab" data-tab="shops"><i>◍</i><span>商店</span></button>
       <button class="tab" data-tab="profile"><i>◉</i><span>我的</span><em class="tab-badge" id="orders-badge" hidden></em></button>

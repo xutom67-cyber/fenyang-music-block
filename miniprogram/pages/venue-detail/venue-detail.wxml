@@ -4,6 +4,7 @@
     <view class="sub-title">{{venue.name}}</view>
     <view class="spacer"></view>
   </view>
+  <image class="street-img" src="{{street}}" mode="aspectFill"></image>
   <view class="venue-hero">
     <view class="hero-glyph">{{venue.glyph}}</view>
     <view class="hero-info">

@@ -44,3 +44,4 @@ page { background: #F4F7F2; }
 .st-chip .v { font-size: 30rpx; font-weight: 800; margin-top: 6rpx; }
 .st-chip .v text { font-size: 20rpx; font-weight: 600; color: #9AA49B; }
 .footer-note { text-align: center; font-size: 20rpx; color: #A9B2AA; margin: 40rpx 40rpx 0; line-height: 1.7; }
+.street-img { width: calc(100% - 48rpx); height: 260rpx; margin: 8rpx 24rpx 0; border-radius: 24rpx; }

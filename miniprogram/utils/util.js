@@ -86,8 +86,21 @@ function ratingCount() {
   return n;
 }
 
+/* 场地/商店街景占位图 */
+const STREET_MAP = {
+  'sy-opera': '/images/street/sy-opera.jpg', 'sso-hall': '/images/street/sso-hall.jpg',
+  'he-luting': '/images/wall/w05-piano.jpg', 'blackstone': '/images/wall/w15-building.jpg',
+  'xiangyang-park': '/images/street/xiangyang-park.jpg', 'pushkin': '/images/street/pushkin.jpg',
+  'shangfang-plaza': '/images/street/shangfang-plaza.jpg',
+  'xingfu': '/images/wall/w07-vinyl.jpg', 'zhiyin': '/images/street/zhiyin.jpg',
+  'yongkang-cafe': '/images/wall/w08-cafe.jpg', 'dongping': '/images/street/dongping.jpg',
+  'yinyue-book': '/images/wall/w13-books.jpg', 'yimu-workshop': '/images/street/yimu-workshop.jpg',
+  'shitao-studio': '/images/street/shitao-studio.jpg', 'huayuan-rest': '/images/street/huayuan-rest.jpg',
+  'nongtang-cafe': '/images/wall/w09-cafe-interior.jpg'
+};
+
 module.exports = {
-  FY, GEO, DEFAULT_CALIB, TILE_UNITS,
+  FY, GEO, DEFAULT_CALIB, TILE_UNITS, STREET_MAP,
   lngOf, latOf, wmFrac, wmLatInv, tileUrl, calibX, calibY,
   clamp, esc, pad, hm, fmtDur, load, save,
   buildSchedule, isPast, nextShows, fmtWhen,

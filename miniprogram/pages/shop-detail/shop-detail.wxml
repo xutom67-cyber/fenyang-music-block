@@ -5,6 +5,7 @@
     <view class="spacer"></view>
   </view>
 
+  <image class="street-img" src="{{street}}" mode="aspectFill"></image>
   <view class="mini-map-wrap">
     <map-view id="shopMap" mode="mini" shopId="{{id}}" showRoute="{{routeOn}}" bind:markertap="noop" bind:routechange="onRouteChange"></map-view>
     <view class="mini-route" wx:if="{{routeOn}}">

@@ -619,6 +619,7 @@ function openVenue(id) {
   currentVenue = id;
   const v = D.venues.find(x => x.id === id);
   $('#venue-title').textContent = v.name;
+  $('#venue-street').src = STREET_MAP[id] || '';
   $('#venue-glyph').textContent = v.glyph;
   $('#venue-name').textContent = v.name;
   $('#venue-addr').textContent = v.addr;
@@ -759,6 +760,7 @@ function openShop(id) {
   currentShop = id;
   const s = D.shops[id];
   $('#shop-glyph').textContent = s.glyph;
+  $('#shop-street').src = STREET_MAP[id] || '';
   $('#shop-name').textContent = s.name;
   $('#shop-addr').textContent = s.addr;
   $('#shop-intro').textContent = s.intro;
@@ -1608,6 +1610,27 @@ const WALL_SEED = [
 ];
 let WALL_POSTS = [];
 
+/* 衡复历史沿革卡片（社区页置顶，点击查看全文） */
+const HIST_CARDS = [
+  { title: '百年衡复', img: 'images/wall/w15-building.jpg', body: '该地块隶属衡山路—复兴路历史文化风貌区，源自法租界时期的“西区”。1920—1930 年代，花园住宅、高级公寓与梧桐林荫道在此大量兴建，至今仍是上海历史风貌保存最完整的街区之一。梧桐掩映下，武康路、汾阳路、复兴中路连缀成片的老洋房与里弄，是近代上海城市生活最精致的样本。' },
+  { title: '音乐学府', img: 'images/wall/w05-piano.jpg', body: '上海音乐学院源自 1927 年创办的国立音乐院，是中国第一所独立建制的高等音乐学府，萧友梅、贺绿汀等音乐家先后在此执教。汾阳路校区坐落于地块东侧、紧邻汾阳路，校园内绿树掩映、琴声不绝，傍晚路过常能听见从琴房传来的练习曲。' },
+  { title: '花园里弄', img: 'images/wall/w09-cafe-interior.jpg', body: '上方花园与相邻的新康花园均为 1930 年代建成的花园住宅小区，红瓦坡顶、庭院错落，是典型的近代花园里弄。如今新康花园的别墅陆续改造为工作坊、餐厅与咖啡馆，老洋房的新生让历史街区保持日常的烟火气。' },
+  { title: '音乐街区', img: 'images/wall/w16-street.jpg', body: '近年上交音乐厅、上音歌剧院相继落成，黑石公寓更新为书店与音乐空间，汾阳路乐器街与上方花园音乐广场共同生长——“音乐”成为这条街区的日常底色。从琴行试琴声到广场周末演出，衡复的每一处角落都在发生音乐。' }
+];
+
+/* 场地/商店街景占位图 */
+const STREET_MAP = {
+  'sy-opera': 'images/street/sy-opera.jpg', 'sso-hall': 'images/street/sso-hall.jpg',
+  'he-luting': 'images/wall/w05-piano.jpg', 'blackstone': 'images/wall/w15-building.jpg',
+  'xiangyang-park': 'images/street/xiangyang-park.jpg', 'pushkin': 'images/street/pushkin.jpg',
+  'shangfang-plaza': 'images/street/shangfang-plaza.jpg',
+  'xingfu': 'images/wall/w07-vinyl.jpg', 'zhiyin': 'images/street/zhiyin.jpg',
+  'yongkang-cafe': 'images/wall/w08-cafe.jpg', 'dongping': 'images/street/dongping.jpg',
+  'yinyue-book': 'images/wall/w13-books.jpg', 'yimu-workshop': 'images/street/yimu-workshop.jpg',
+  'shitao-studio': 'images/street/shitao-studio.jpg', 'huayuan-rest': 'images/street/huayuan-rest.jpg',
+  'nongtang-cafe': 'images/wall/w09-cafe-interior.jpg'
+};
+
 function wallName(type, key) {
   if (type === 'venue') { const v = D.venues.find(x => x.id === key); return v ? v.name : key; }
   const s = D.shops[key]; return s ? s.name : key;
@@ -1621,18 +1644,132 @@ function wallLoad() {
 function wallSave(posts) { localStorage.setItem(WALL_KEY, JSON.stringify(posts)); }
 function renderWall() {
   const g = $('#wall-grid');
-  g.innerHTML = WALL_POSTS.map(p => {
+  const hist = HIST_CARDS.map((h, i) => `<div class="wall-card" data-pid="hist${i}">
+    <div class="wall-img-wrap"><img class="wall-img" src="${esc(h.img)}" alt="${esc(h.title)}" loading="lazy">
+      <span class="wall-tag ht">街区历史</span></div>
+    <div class="wall-body">
+      <div class="wall-name">${esc(h.title)}</div>
+      <div class="wall-text">${esc(h.body.length > 52 ? h.body.slice(0, 52) + '…' : h.body)}</div>
+      <div class="wall-foot"><span class="wall-author">♪ 汾阳路音乐街区</span><span class="wall-time">沿革 · ${wallCmtCount('hist' + i)} 评论</span></div>
+    </div></div>`).join('');
+  const posts = WALL_POSTS.map(p => {
     const name = wallName(p.type, p.key);
     const tag = p.type === 'venue' ? '演出场地' : '商店';
-    return `<div class="wall-card">
+    return `<div class="wall-card" data-pid="${esc(p.id)}">
       <div class="wall-img-wrap"><img class="wall-img" src="${esc(p.img)}" alt="${esc(name)}" loading="lazy">
         <span class="wall-tag ${p.type === 'venue' ? 'vt' : 'st'}">${tag}</span></div>
       <div class="wall-body">
         <div class="wall-name">${esc(name)}</div>
         ${p.text ? `<div class="wall-text">${esc(p.text)}</div>` : ''}
-        <div class="wall-foot"><span class="wall-author">♪ ${esc(p.author)}</span><span class="wall-time">${wallTime((Date.now() - p.ts) / 3600000)}</span></div>
+        <div class="wall-foot"><span class="wall-author">♪ ${esc(p.author)}</span><span class="wall-time">${wallTime((Date.now() - p.ts) / 3600000)} · ${wallCmtCount(p.id)} 评论</span></div>
       </div></div>`;
   }).join('');
+  g.innerHTML = hist + posts;
+}
+
+/* ---------- 帖子互动：点赞 / 评论 / 回复 ---------- */
+const CMT_KEY = 'fy_wall_cmts_v1', LIKE_KEY = 'fy_wall_likes_v1';
+const CMT_SEED = {
+  seed0: [
+    { author: '街坊老王', text: '上周刚去听过一次，音效真的震撼', replyTo: null },
+    { author: '乐迷·小林', text: '同感！建议买二楼中排', replyTo: '街坊老王' }
+  ],
+  seed6: [
+    { author: '旅人S', text: '黑胶区每周四上新，蹲了很久了', replyTo: null },
+    { author: '琴童妈妈', text: '小朋友在那里第一次听黑胶，特别喜欢', replyTo: null }
+  ],
+  seed1: [
+    { author: '摄影·Ken', text: '灯光真的绝，拍照出片', replyTo: null },
+    { author: '街坊老王', text: '每周五都有，欢迎来玩', replyTo: '摄影·Ken' }
+  ],
+  hist1: [
+    { author: '上音学生·阿哲', text: '每天路过琴房都听到练琴声，太幸福了', replyTo: null }
+  ],
+  hist0: [
+    { author: '旅人S', text: '武康路和汾阳路这段真的值得慢慢走', replyTo: null }
+  ]
+};
+const LIKE_SEED = { seed0: true, seed6: true, seed1: true, hist1: true };
+let WALL_CMTS = null, WALL_LIKES = null, postCtx = null, replyTo = null;
+
+function cmtLoad() {
+  if (WALL_CMTS) return WALL_CMTS;
+  const saved = loadJSON(CMT_KEY, null);
+  if (!saved) {
+    const seeded = {};
+    for (const pid in CMT_SEED) seeded[pid] = CMT_SEED[pid].map(c => ({ ...c, ts: Date.now() - Math.floor(Math.random() * 48 + 2) * 3600000 }));
+    WALL_CMTS = seeded;
+    localStorage.setItem(CMT_KEY, JSON.stringify(seeded));
+  } else WALL_CMTS = saved;
+  return WALL_CMTS;
+}
+function wallCmtCount(pid) { const c = cmtLoad()[pid]; return c ? c.length : 0; }
+function likeLoad() {
+  if (WALL_LIKES) return WALL_LIKES;
+  const saved = loadJSON(LIKE_KEY, null);
+  WALL_LIKES = saved || { ...LIKE_SEED };
+  if (!saved) localStorage.setItem(LIKE_KEY, JSON.stringify(WALL_LIKES));
+  return WALL_LIKES;
+}
+function likeCount(pid) { const base = (pid.length * 7) % 6 + 2; return base + (likeLoad()[pid] ? 1 : 0); }
+
+function openPost(pid) {
+  cmtLoad(); likeLoad();
+  const h = pid.indexOf('hist') === 0 ? HIST_CARDS[Number(pid.slice(4))] : null;
+  let name, tag, tagCls, text, author, time, canGo = false;
+  if (h) {
+    name = h.title; tag = '街区历史'; tagCls = 'ht'; text = h.body; author = '汾阳路音乐街区'; time = '沿革';
+  } else {
+    const p = WALL_POSTS.find(x => x.id === pid);
+    if (!p) return;
+    name = wallName(p.type, p.key); tag = p.type === 'venue' ? '演出场地' : '商店';
+    tagCls = p.type === 'venue' ? 'vt' : 'st'; text = p.text || '';
+    author = p.author; time = wallTime((Date.now() - p.ts) / 3600000); canGo = true;
+  }
+  postCtx = { pid, kind: h ? 'hist' : (WALL_POSTS.find(x => x.id === pid) || {}).type, key: (WALL_POSTS.find(x => x.id === pid) || {}).key, canGo };
+  replyTo = null;
+  $('#post-title').textContent = name;
+  $('#post-img').src = WALL_POSTS.find(x => x.id === pid) ? WALL_POSTS.find(x => x.id === pid).img : (h ? h.img : '');
+  $('#post-tag').textContent = tag;
+  $('#post-tag').className = 'wall-tag ' + tagCls;
+  $('#post-author').textContent = '♪ ' + author;
+  $('#post-time').textContent = time;
+  $('#post-text').textContent = text;
+  $('#post-go').hidden = !canGo;
+  $('#post-like').textContent = (likeLoad()[pid] ? '❤' : '♡') + ' ' + likeCount(pid);
+  $('#post-input').value = '';
+  $('#post-input').placeholder = '说点什么…（点评论可回复）';
+  renderComments();
+  $('#post-modal').hidden = false;
+}
+function renderComments() {
+  const list = (WALL_CMTS[postCtx.pid] || []).slice().reverse();
+  $('#post-comments').innerHTML = list.length
+    ? list.map(c => `<div class="pcomment${c.replyTo ? ' reply' : ''}" data-author="${esc(c.author)}">
+        <span class="pc-author">♪ ${esc(c.author)}</span>${c.replyTo ? `<span class="pc-reply">回复 @${esc(c.replyTo)}</span>` : ''}
+        <span class="pc-text">${esc(c.text)}</span>
+        <span class="pc-time">${wallTime((Date.now() - c.ts) / 3600000)}</span></div>`).join('')
+    : '<div class="pcomment empty">还没有评论，来抢沙发～</div>';
+}
+function postComment() {
+  const input = $('#post-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const prof = loadJSON('fy_profile_v1', null);
+  const c = { author: (prof && prof.name) || '汾阳乐迷', text, replyTo, ts: Date.now() };
+  if (!WALL_CMTS[postCtx.pid]) WALL_CMTS[postCtx.pid] = [];
+  WALL_CMTS[postCtx.pid].push(c);
+  localStorage.setItem(CMT_KEY, JSON.stringify(WALL_CMTS));
+  input.value = ''; replyTo = null;
+  input.placeholder = '说点什么…（点评论可回复）';
+  renderComments();
+  renderWall();
+}
+function toggleLike() {
+  if (!postCtx) return;
+  WALL_LIKES[postCtx.pid] = !WALL_LIKES[postCtx.pid];
+  localStorage.setItem(LIKE_KEY, JSON.stringify(WALL_LIKES));
+  $('#post-like').textContent = (WALL_LIKES[postCtx.pid] ? '❤' : '♡') + ' ' + likeCount(postCtx.pid);
 }
 function wallFillTargets() {
   const t = $('#wm-type').value;
@@ -1653,6 +1790,27 @@ function wallInit() {
   WALL_POSTS = wallLoad();
   renderWall();
   $('#btn-wall-pub').addEventListener('click', wallOpen);
+  $('#wall-grid').addEventListener('click', e => {
+    const card = e.target.closest('.wall-card');
+    if (!card || !card.dataset.pid) return;
+    openPost(card.dataset.pid);
+  });
+  $('#post-like').addEventListener('click', toggleLike);
+  $('#post-send').addEventListener('click', postComment);
+  $('#post-input').addEventListener('keydown', e => { if (e.key === 'Enter') postComment(); });
+  $('#post-comments').addEventListener('click', e => {
+    const c = e.target.closest('.pcomment');
+    if (!c || c.classList.contains('empty')) return;
+    replyTo = c.dataset.author;
+    const input = $('#post-input');
+    input.placeholder = '回复 @' + replyTo + '：';
+    input.focus();
+  });
+  $('#post-go').addEventListener('click', () => {
+    if (!postCtx || !postCtx.canGo) return;
+    $('#post-modal').hidden = true;
+    if (postCtx.kind === 'venue') openVenue(postCtx.key); else openShop(postCtx.key);
+  });
   $('#wm-type').addEventListener('change', wallFillTargets);
   $('#wm-imgpick').addEventListener('click', () => $('#wm-file').click());
   $('#wm-preview').addEventListener('click', () => $('#wm-file').click());

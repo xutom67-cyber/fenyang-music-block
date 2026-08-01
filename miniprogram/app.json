@@ -24,7 +24,7 @@
     "borderStyle": "white",
     "list": [
       { "pagePath": "pages/index/index", "text": "首页", "iconPath": "images/tabbar/home.png", "selectedIconPath": "images/tabbar/home-a.png" },
-      { "pagePath": "pages/history/history", "text": "历史", "iconPath": "images/tabbar/history.png", "selectedIconPath": "images/tabbar/history-a.png" },
+      { "pagePath": "pages/history/history", "text": "社区", "iconPath": "images/tabbar/history.png", "selectedIconPath": "images/tabbar/history-a.png" },
       { "pagePath": "pages/venues/venues", "text": "场地", "iconPath": "images/tabbar/venues.png", "selectedIconPath": "images/tabbar/venues-a.png" },
       { "pagePath": "pages/shops/shops", "text": "商店", "iconPath": "images/tabbar/shops.png", "selectedIconPath": "images/tabbar/shops-a.png" },
       { "pagePath": "pages/profile/profile", "text": "我的", "iconPath": "images/tabbar/profile.png", "selectedIconPath": "images/tabbar/profile-a.png" }

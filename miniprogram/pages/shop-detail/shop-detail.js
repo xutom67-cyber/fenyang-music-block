@@ -10,7 +10,7 @@ Page({
     const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
     this.id = options.id;
     this.shop = FY.shops[this.id];
-    this.setData({ statusBarH: info.statusBarHeight || 20, id: this.id });
+    this.setData({ statusBarH: info.statusBarHeight || 20, id: this.id, street: util.STREET_MAP[this.id] || '' });
     this.buildShop();
     this.buildItems();
     this.buildSlots();
