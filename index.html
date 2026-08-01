@@ -336,23 +336,6 @@
 
         <img class="street-img" id="shop-street" src="" alt="街景">
 
-        <div class="mini-map-wrap">
-          <svg id="shop-minimap" viewBox="0 0 760 880" preserveAspectRatio="xMidYMid meet"></svg>
-          <div class="mini-route" id="mini-route" hidden>
-            <span class="mr-start" id="mr-start">常熟路地铁站</span>
-            <span class="mr-arrow">→</span>
-            <span class="mr-end" id="mr-end"></span>
-            <span class="mr-meta" id="mr-meta"></span>
-            <button id="btn-route-go">开始导航</button>
-          </div>
-          <span class="mini-tag">▲ 店内定位</span>
-          <button class="mini-nav" id="btn-mini-nav" title="路线导航">导航</button>
-          <div class="mini-zoom">
-            <button id="mini-zoom-in" title="放大">＋</button>
-            <button id="mini-zoom-out" title="缩小">－</button>
-          </div>
-        </div>
-
         <div class="sheet-body">
           <div class="shop-head">
             <span class="hero-glyph small" id="shop-glyph">书</span>
@@ -361,6 +344,26 @@
               <div class="hero-addr" id="shop-addr"></div>
             </div>
           </div>
+
+          <div class="map-toggle" id="map-toggle"><span class="mt-ic">◉</span>查看店铺地图<span class="mt-arrow">▾</span></div>
+
+          <div class="mini-map-wrap" id="mini-map-wrap" hidden>
+            <svg id="shop-minimap" viewBox="0 0 760 880" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="mini-route" id="mini-route" hidden>
+              <span class="mr-start" id="mr-start">常熟路地铁站</span>
+              <span class="mr-arrow">→</span>
+              <span class="mr-end" id="mr-end"></span>
+              <span class="mr-meta" id="mr-meta"></span>
+              <button id="btn-route-go">开始导航</button>
+            </div>
+            <span class="mini-tag">▲ 店内定位</span>
+            <button class="mini-nav" id="btn-mini-nav" title="路线导航">导航</button>
+            <div class="mini-zoom">
+              <button id="mini-zoom-in" title="放大">＋</button>
+              <button id="mini-zoom-out" title="缩小">－</button>
+            </div>
+          </div>
+
           <p class="venue-intro" id="shop-intro"></p>
 
           <div class="live-grid" id="live-grid"></div>

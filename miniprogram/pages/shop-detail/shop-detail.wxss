@@ -60,3 +60,12 @@ page { background: #F4F7F2; }
 .perf-title { font-size: 26rpx; font-weight: 700; }
 .perf-meta { font-size: 21rpx; color: #9AA49B; margin-top: 6rpx; display: flex; gap: 16rpx; }
 .street-img { width: calc(100% - 48rpx); height: 220rpx; margin: 8rpx 24rpx 0; border-radius: 24rpx; }
+
+/* 地图折叠开关 */
+.map-toggle {
+  display: flex; align-items: center; gap: 14rpx; margin: 20rpx 24rpx 0;
+  padding: 20rpx 28rpx; border: 3rpx solid #D8E6DC; border-radius: 22rpx;
+  font-size: 25rpx; color: #3E7A5F; font-weight: 700; background: #F4F9F3;
+}
+.map-toggle .mt-ic { color: #5E9C80; font-size: 26rpx; }
+.map-toggle .mt-arrow { margin-left: auto; color: #9AA49B; font-size: 22rpx; }

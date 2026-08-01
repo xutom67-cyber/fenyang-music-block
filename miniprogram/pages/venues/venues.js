@@ -14,6 +14,7 @@ Page({
       return {
         id: v.id, glyph: v.glyph, name: v.name, addr: v.addr,
         rating: v.ratingBase.avg.toFixed(1),
+        street: util.STREET_MAP[v.id] || '',
         level: lv,
         status: lv <= 2 ? '畅通' : lv === 3 ? '较顺畅' : lv === 4 ? '拥挤' : '非常拥挤'
       };

@@ -13,6 +13,7 @@ Page({
       const live = this.liveState(s);
       return {
         id, glyph: s.glyph, name: s.name, type: s.type, addr: s.addr,
+        street: util.STREET_MAP[id] || '',
         rate: s.ratingBase.avg.toFixed(1),
         busy: live.busy, status: live.status
       };

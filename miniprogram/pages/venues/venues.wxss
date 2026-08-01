@@ -18,3 +18,18 @@ page { background: #F4F7F2; }
 .vc-crowd.c4, .vc-crowd.c5 { background: #FBE9E4; color: #C0703C; }
 .vc-arrow { color: #B0B9B0; font-size: 34rpx; }
 .footer-note { text-align: center; font-size: 20rpx; color: #A9B2AA; margin: 40rpx 40rpx 0; line-height: 1.7; }
+
+/* 卡片右侧街景（从右往左渐隐，黄金分割位消失） */
+.venue-card { position: relative; overflow: hidden; }
+.card-street {
+  position: absolute; top: 0; right: 0; height: 100%; width: 39%;
+  object-fit: cover; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, #000 0%, rgba(0,0,0,.75) 32%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 0%, rgba(0,0,0,.75) 32%, transparent 100%);
+}
+.venue-card .vc-arrow {
+  position: relative; z-index: 1; flex-shrink: 0;
+  background: rgba(255,255,255,.9); border-radius: 50%;
+  width: 44rpx; height: 44rpx; display: flex; align-items: center; justify-content: center;
+  color: #6E7A71; font-size: 30rpx;
+}

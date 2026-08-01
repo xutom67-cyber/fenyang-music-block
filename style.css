@@ -993,3 +993,29 @@ a.edit-toggle { display: inline-flex; align-items: center; text-decoration: none
   border: none; border-radius: 999px; padding: 0 20px; background: #5E9C80; color: #fff;
   font-size: 13px; font-weight: 700; cursor: pointer;
 }
+
+/* 列表卡片右侧街景（从右往左渐隐，黄金分割位消失） */
+.venue-card, .shop-item { position: relative; overflow: hidden; }
+.card-street {
+  position: absolute; top: 0; right: 0; height: 100%; width: 39%;
+  object-fit: cover; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, #000 0%, rgba(0,0,0,.75) 32%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 0%, rgba(0,0,0,.75) 32%, transparent 100%);
+}
+.venue-card .vc-arrow, .shop-item .vc-arrow {
+  position: relative; z-index: 1; flex-shrink: 0;
+  background: rgba(255,255,255,.9); border-radius: 50%;
+  width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  color: #6E7A71; font-size: 15px;
+}
+
+/* 商店地图折叠开关 */
+.map-toggle {
+  display: flex; align-items: center; gap: 7px; margin-top: 12px;
+  padding: 10px 14px; border: 1.4px solid #D8E6DC; border-radius: 12px;
+  font-size: 12.5px; color: #3E7A5F; font-weight: 700; cursor: pointer;
+  background: #F4F9F3;
+}
+.map-toggle .mt-ic { color: #5E9C80; font-size: 13px; }
+.map-toggle .mt-arrow { margin-left: auto; color: #9AA49B; font-size: 11px; }
+.sheet-body .mini-map-wrap { margin-top: 12px; height: 210px; border-radius: 14px; }

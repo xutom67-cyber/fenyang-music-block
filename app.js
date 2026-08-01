@@ -545,7 +545,8 @@ function renderVenueCards() {
       `<div class="vc-addr">${v.addr}</div>` +
       `<div class="vc-meta"><span class="vc-rate">★ ${v.ratingBase.avg.toFixed(1)}</span>` +
       `<span class="vc-crowd c${c.level}">${statusOf(c.level)}</span></div></div>` +
-      `<span class="vc-arrow">›</span>`;
+      `<span class="vc-arrow">›</span>` +
+      `<img class="card-street" src="${STREET_MAP[v.id] || ''}" alt="" loading="lazy">`;
     card.addEventListener('click', () => openVenue(v.id));
     wrap.appendChild(card);
   });
@@ -586,7 +587,8 @@ function renderShopList() {
       `<div class="si-meta">${s.type} · ${esc(s.addr)}</div>` +
       `<div class="vc-meta"><span class="vc-rate">★ ${avgFor('shop', sid, s.ratingBase).toFixed(1)}</span>` +
       `<span class="si-status ${l.busy ? 'busy' : 'ok'}">${l.status}</span></div></div>` +
-      `<span class="vc-arrow">›</span>`;
+      `<span class="vc-arrow">›</span>` +
+      `<img class="card-street" src="${STREET_MAP[sid] || ''}" alt="" loading="lazy">`;
     item.addEventListener('click', () => openShop(sid));
     wrap.appendChild(item);
   }
@@ -766,6 +768,8 @@ function openShop(id) {
   $('#shop-intro').textContent = s.intro;
   renderShopLive(id);
   renderShopOrderForm(id);
+  $('#mini-map-wrap').hidden = true;
+  $('#map-toggle .mt-arrow').textContent = '▾';
   minimapZoom = 1;
   minimapCx = calibX(s.map.x, s.map.y);
   minimapCy = calibY(s.map.x, s.map.y);
@@ -828,6 +832,12 @@ function toggleMiniRoute() {
   renderMinimap(currentShop);
 }
 $('#btn-mini-nav').addEventListener('click', toggleMiniRoute);
+$('#map-toggle').addEventListener('click', () => {
+  const w = $('#mini-map-wrap');
+  w.hidden = !w.hidden;
+  $('#map-toggle .mt-arrow').textContent = w.hidden ? '▾' : '▴';
+  if (!w.hidden) renderMinimap(currentShop);
+});
 $('#btn-route-go').addEventListener('click', () => toast('模拟导航中 · 沿绿色路线步行前往'));
 function calibX(x, y) {
   const r = (calib && calib.rot || 0) * Math.PI / 180, c = Math.cos(r), s = Math.sin(r);

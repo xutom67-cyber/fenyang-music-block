@@ -16,3 +16,13 @@ page { background: #F4F7F2; }
 .si-status.ok { background: #E8F4EC; color: #4E9A6B; }
 .si-status.busy { background: #FBF3DC; color: #B08A2E; }
 .footer-note { text-align: center; font-size: 20rpx; color: #A9B2AA; margin: 40rpx 40rpx 0; line-height: 1.7; }
+
+/* 卡片右侧街景（从右往左渐隐，黄金分割位消失） */
+.shop-item { position: relative; overflow: hidden; }
+.card-street {
+  position: absolute; top: 0; right: 0; height: 100%; width: 39%;
+  object-fit: cover; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, #000 0%, rgba(0,0,0,.75) 32%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 0%, rgba(0,0,0,.75) 32%, transparent 100%);
+}
+.shop-item .si-right { position: relative; z-index: 1; }

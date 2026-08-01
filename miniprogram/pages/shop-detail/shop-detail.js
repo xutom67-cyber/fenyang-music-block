@@ -4,7 +4,7 @@ const util = require('../../utils/util.js');
 Page({
   data: {
     statusBarH: 20, id: '', shop: {}, live: {}, items: [], slots: [], slotIdx: 0,
-    total: 0, ordered: false, orderCode: '', orderSlot: '', routeOn: false, route: {}, nearby: []
+    total: 0, ordered: false, orderCode: '', orderSlot: '', routeOn: false, route: {}, nearby: [], showMap: false
   },
   onLoad(options) {
     const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync();
@@ -67,6 +67,7 @@ Page({
     this.setData({ items, total: items.reduce((a, it) => a + it.qty * it.price, 0) });
   },
   pickSlot(e) { this.setData({ slotIdx: e.currentTarget.dataset.i }); },
+  toggleMap() { this.setData({ showMap: !this.data.showMap }); },
   toggleRoute() {
     this.setData({ routeOn: !this.data.routeOn });
   },

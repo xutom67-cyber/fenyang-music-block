@@ -6,7 +6,18 @@
   </view>
 
   <image class="street-img" src="{{street}}" mode="aspectFill"></image>
-  <view class="mini-map-wrap">
+
+  <view class="shop-head">
+    <view class="hero-glyph small">{{shop.glyph}}</view>
+    <view>
+      <view class="hero-name">{{shop.name}}</view>
+      <view class="hero-addr">{{shop.addr}}</view>
+    </view>
+  </view>
+
+  <view class="map-toggle" bindtap="toggleMap"><text class="mt-ic">◉</text>查看店铺地图<text class="mt-arrow">{{showMap ? '▴' : '▾'}}</text></view>
+
+  <view class="mini-map-wrap" wx:if="{{showMap}}">
     <map-view id="shopMap" mode="mini" shopId="{{id}}" showRoute="{{routeOn}}" bind:markertap="noop" bind:routechange="onRouteChange"></map-view>
     <view class="mini-route" wx:if="{{routeOn}}">
       <text class="mr-start">{{route.start}}</text><text class="mr-arrow">→</text>
@@ -17,13 +28,6 @@
     <view class="mini-nav {{routeOn ? 'on' : ''}}" bindtap="toggleRoute">{{routeOn ? '关闭导航' : '导航'}}</view>
   </view>
 
-  <view class="shop-head">
-    <view class="hero-glyph small">{{shop.glyph}}</view>
-    <view>
-      <view class="hero-name">{{shop.name}}</view>
-      <view class="hero-addr">{{shop.addr}}</view>
-    </view>
-  </view>
   <text class="venue-intro">{{shop.intro}}</text>
 
   <view class="live-grid">

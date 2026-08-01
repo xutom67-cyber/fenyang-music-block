@@ -15,6 +15,7 @@
       </view>
     </view>
     <view class="vc-arrow">›</view>
+    <image class="card-street" src="{{item.street}}" mode="aspectFill"></image>
   </view>
   <view class="footer-note">人群密度与通行时间实时模拟 · 场地与演出均可评分（0–5.0）</view>
 </view>

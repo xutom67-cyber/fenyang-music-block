@@ -14,6 +14,7 @@
       <view class="si-rate">★ {{item.rate}}</view>
       <view class="si-status {{item.busy ? 'busy' : 'ok'}}">{{item.status}}</view>
     </view>
+    <image class="card-street" src="{{item.street}}" mode="aspectFill"></image>
   </view>
   <view class="footer-note">商店实时人数 / 订单 / 等待时间模拟 · 支持预约下单</view>
 </view>
