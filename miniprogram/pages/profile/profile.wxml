@@ -1,0 +1,73 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="page-sub">
+    <text class="sub-title">我的</text>
+    <text class="sub-spacer"></text>
+  </view>
+
+  <view class="prof-card" bindtap="editProfile">
+    <view class="prof-avatar" style="background:{{avatarGrad}}">{{avatarGlyph}}</view>
+    <view class="prof-info">
+      <view class="prof-name">{{profile.name}} <text class="prof-badge">Lv.{{member.level}} · 汾阳乐迷</text></view>
+      <view class="prof-sub">{{profile.ident}} · {{member.joinedYear}} 年加入</view>
+      <view class="prof-bio" wx:if="{{profile.bio}}">{{profile.bio}}</view>
+    </view>
+    <view class="prof-edit">✎</view>
+  </view>
+
+  <view class="stat-row">
+    <view class="stat-tile"><view class="v">{{statTickets}}</view><view class="k">累计购票</view></view>
+    <view class="stat-tile"><view class="v">{{statOrders}}</view><view class="k">商店订单</view></view>
+    <view class="stat-tile"><view class="v">{{statWaiting}}</view><view class="k">待使用</view></view>
+    <view class="stat-tile"><view class="v">{{statRatings}}</view><view class="k">我的评价</view></view>
+  </view>
+
+  <view class="member-card">
+    <view class="mc-top">
+      <view class="mc-title">♪ 汾阳路音乐街区 · 会员码</view>
+      <view class="mc-level">Lv.{{member.level}}</view>
+    </view>
+    <view class="mc-main">
+      <canvas type="2d" id="memberQr" class="mc-qr"></canvas>
+      <view class="mc-side">
+        <view class="mc-code">{{member.code}}</view>
+        <view class="mc-perks">
+          <view>演出票 9.5 折</view>
+          <view>商店预约优先取货</view>
+          <view>每月 1 张音乐市集券</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="sec-head"><text class="sh-b">演出票</text><text class="sh-s">{{ticketCount}} 笔</text></view>
+  <view class="order-card" wx:for="{{ticketOrders}}" wx:key="id" data-id="{{item.id}}" bindtap="openQr">
+    <view class="oc-glyph">票</view>
+    <view class="oc-info">
+      <view class="oc-title">{{item.title}}</view>
+      <view class="oc-meta">{{item.venue}} · {{item.when}} · {{item.qty}} 张</view>
+      <view class="oc-code">{{item.code}}</view>
+    </view>
+    <view class="oc-right">
+      <view class="oc-total">¥{{item.total}}</view>
+      <view class="oc-status {{item.statusCls}}">{{item.statusTxt}}</view>
+    </view>
+  </view>
+  <view class="footer-note" wx:if="{{!ticketOrders.length}}">还没有演出票，去「场地」页购票吧</view>
+
+  <view class="sec-head"><text class="sh-b">商店订单</text><text class="sh-s">{{shopOrderCount}} 笔</text></view>
+  <view class="order-card" wx:for="{{shopOrders}}" wx:key="id" data-id="{{item.id}}" bindtap="openQr">
+    <view class="oc-glyph">{{item.glyph || '购'}}</view>
+    <view class="oc-info">
+      <view class="oc-title">{{item.shopName}}</view>
+      <view class="oc-meta">{{item.slot}} {{item.when}} · {{item.itemsTxt}}</view>
+      <view class="oc-code">{{item.code}}</view>
+    </view>
+    <view class="oc-right">
+      <view class="oc-total">¥{{item.total}}</view>
+      <view class="oc-status {{item.statusCls}}">{{item.statusTxt}}</view>
+    </view>
+  </view>
+  <view class="footer-note" wx:if="{{!shopOrders.length}}">还没有商店订单，去「商店」页预约吧</view>
+
+  <view class="footer-note">点击订单卡片查看兑换二维码 · 数据保存在本机 · 演示</view>
+</view>

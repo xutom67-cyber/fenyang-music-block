@@ -1,0 +1,19 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="page-sub">
+    <text class="sub-title">商店</text>
+    <text class="sub-spacer"></text>
+  </view>
+  <view class="sec-head"><text class="sh-b">街区商店</text><text class="sh-s">点击查看定位、预约与实时数据</text></view>
+  <view class="shop-item" wx:for="{{shops}}" wx:key="id" data-id="{{item.id}}" bindtap="open">
+    <view class="si-glyph">{{item.glyph}}</view>
+    <view class="si-info">
+      <view class="si-name">{{item.name}}</view>
+      <view class="si-meta">{{item.type}} · {{item.addr}}</view>
+    </view>
+    <view class="si-right">
+      <view class="si-rate">★ {{item.rate}}</view>
+      <view class="si-status {{item.busy ? 'busy' : 'ok'}}">{{item.status}}</view>
+    </view>
+  </view>
+  <view class="footer-note">商店实时人数 / 订单 / 等待时间模拟 · 支持预约下单</view>
+</view>

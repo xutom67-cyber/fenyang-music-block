@@ -1,0 +1,11 @@
+<view class="sp-page">
+  <image class="sp-bg" src="/images/overview-render.jpg" mode="aspectFill"></image>
+  <view class="sp-veil"></view>
+  <view class="sp-content">
+    <view class="sp-logo">♪</view>
+    <view class="sp-title">欢迎来到<view>汾阳音乐街区</view></view>
+    <view class="sp-sub">衡复风貌区 · 上音片区</view>
+    <button class="sp-enter" bindtap="enter">点击进入 ›</button>
+    <view class="sp-foot">MUSIC BLOCK · FENYANG ROAD</view>
+  </view>
+</view>

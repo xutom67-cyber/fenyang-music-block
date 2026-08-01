@@ -1,0 +1,20 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="page-sub">
+    <text class="sub-title">表演场地</text>
+    <text class="sub-spacer"></text>
+  </view>
+  <view class="sec-head"><text class="sh-b">活动场地</text><text class="sh-s">点击查看演出时间表与现场状态</text></view>
+  <view class="venue-card" wx:for="{{venues}}" wx:key="id" data-id="{{item.id}}" bindtap="open">
+    <view class="vc-glyph">{{item.glyph}}</view>
+    <view class="vc-info">
+      <view class="vc-name">{{item.name}}</view>
+      <view class="vc-addr">{{item.addr}}</view>
+      <view class="vc-meta">
+        <text class="vc-rate">★ {{item.rating}}</text>
+        <text class="vc-crowd c{{item.level}}">{{item.status}}</text>
+      </view>
+    </view>
+    <view class="vc-arrow">›</view>
+  </view>
+  <view class="footer-note">人群密度与通行时间实时模拟 · 场地与演出均可评分（0–5.0）</view>
+</view>

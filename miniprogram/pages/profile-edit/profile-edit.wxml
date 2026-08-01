@@ -1,0 +1,27 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="sub-header">
+    <view class="back" bindtap="goBack">‹</view>
+    <view class="sub-title">编辑资料</view>
+    <view class="spacer"></view>
+  </view>
+  <view class="pe-head">
+    <view class="pe-avatar" style="background:{{avatarGrad}}">{{avatarGlyph}}</view>
+    <view class="pe-head-tip">选择头像 · 修改昵称与简介</view>
+  </view>
+  <view class="pe-avatars">
+    <view wx:for="{{avatars}}" wx:key="*this" class="pe-avatar-opt {{avatarIdx === index ? 'on' : ''}}" style="background:{{item[1]}}" data-i="{{index}}" bindtap="pickAvatar">{{item[0]}}</view>
+  </view>
+  <view class="form-row">
+    <view class="form-label">昵称</view>
+    <input class="form-input" value="{{name}}" maxlength="12" placeholder="输入昵称" bindinput="onName" />
+  </view>
+  <view class="form-row">
+    <view class="form-label">身份</view>
+    <input class="form-input" value="{{ident}}" maxlength="24" placeholder="学校 · 专业" bindinput="onIdent" />
+  </view>
+  <view class="form-row">
+    <view class="form-label">简介</view>
+    <textarea class="form-input ta" value="{{bio}}" maxlength="40" placeholder="一句话介绍自己" bindinput="onBio"></textarea>
+  </view>
+  <button class="save-btn" bindtap="save">保存</button>
+</view>

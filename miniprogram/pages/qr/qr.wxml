@@ -1,0 +1,16 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="sub-header">
+    <view class="back" bindtap="goBack">‹</view>
+    <view class="sub-title">兑换二维码</view>
+    <view class="spacer"></view>
+  </view>
+  <view class="qr-type">{{type}}</view>
+  <view class="qr-title">{{title}}</view>
+  <view class="qr-meta">{{meta}}</view>
+  <view class="qr-box {{statusCls === 'done' ? 'off' : ''}}">
+    <canvas type="2d" id="qrCanvas" class="qr-canvas"></canvas>
+    <view class="qr-code-text">{{code}}</view>
+  </view>
+  <view class="qr-note">{{note}}</view>
+  <view class="qr-status {{statusCls}}">{{statusTxt}}</view>
+</view>

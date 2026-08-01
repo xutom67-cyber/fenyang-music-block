@@ -1,0 +1,17 @@
+page { background: #F4F7F2; }
+.page { padding-bottom: 60rpx; display: flex; flex-direction: column; align-items: center; }
+.sub-header { display: flex; align-items: center; gap: 20rpx; padding: 20rpx 28rpx 12rpx; width: 100%; box-sizing: border-box; }
+.back { width: 60rpx; height: 60rpx; border-radius: 50%; background: #EDF1EC; color: #6E7A71; font-size: 34rpx; display: flex; align-items: center; justify-content: center; }
+.sub-title { font-size: 30rpx; font-weight: 800; flex: 1; text-align: center; }
+.spacer { width: 60rpx; }
+.qr-type { font-size: 22rpx; color: #4F8F71; font-weight: 700; letter-spacing: 3rpx; margin-top: 30rpx; }
+.qr-title { font-size: 32rpx; font-weight: 800; margin-top: 16rpx; padding: 0 52rpx; text-align: center; line-height: 1.4; }
+.qr-meta { font-size: 22rpx; color: #9AA49B; margin-top: 10rpx; padding: 0 52rpx; text-align: center; line-height: 1.6; }
+.qr-box { margin: 36rpx auto 8rpx; padding: 36rpx; background: #fff; border-radius: 36rpx; box-shadow: 0 12rpx 40rpx rgba(47,63,53,.08); }
+.qr-box.off { opacity: .5; filter: grayscale(1); }
+.qr-canvas { width: 376rpx; height: 376rpx; }
+.qr-code-text { margin-top: 24rpx; font-size: 26rpx; font-weight: 700; letter-spacing: 5rpx; color: #2F3F35; font-variant-numeric: tabular-nums; text-align: center; }
+.qr-note { font-size: 22rpx; color: #8B968E; margin: 28rpx 60rpx 8rpx; line-height: 1.7; text-align: center; }
+.qr-status { display: inline-block; margin: 16rpx auto 30rpx; font-size: 22rpx; font-weight: 700; padding: 8rpx 28rpx; border-radius: 999rpx; }
+.qr-status.waiting { background: #E8F4EC; color: #4E9A6B; }
+.qr-status.done { background: #F0F2EE; color: #9AA49B; }

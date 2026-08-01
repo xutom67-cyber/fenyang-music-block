@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# 打包产物
+*.zip
+
+# Node / Python
+node_modules/
+__pycache__/
+*.pyc
+
+# 本地服务器脚本（H5 原型本地代理用，不入库）
+fy_server.py

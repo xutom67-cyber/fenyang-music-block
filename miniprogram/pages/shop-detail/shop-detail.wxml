@@ -1,0 +1,77 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="sub-header">
+    <view class="back" bindtap="goBack">‹</view>
+    <view class="sub-title">{{shop.name}}</view>
+    <view class="spacer"></view>
+  </view>
+
+  <view class="mini-map-wrap">
+    <map-view id="shopMap" mode="mini" shopId="{{id}}" showRoute="{{routeOn}}" bind:markertap="noop" bind:routechange="onRouteChange"></map-view>
+    <view class="mini-route" wx:if="{{routeOn}}">
+      <text class="mr-start">{{route.start}}</text><text class="mr-arrow">→</text>
+      <text class="mr-end">{{shop.name}}</text>
+      <text class="mr-meta">{{route.d}} 米 · 步行约 {{route.mins}} 分钟</text>
+    </view>
+    <view class="mini-tag">▲ 店内定位</view>
+    <view class="mini-nav {{routeOn ? 'on' : ''}}" bindtap="toggleRoute">{{routeOn ? '关闭导航' : '导航'}}</view>
+  </view>
+
+  <view class="shop-head">
+    <view class="hero-glyph small">{{shop.glyph}}</view>
+    <view>
+      <view class="hero-name">{{shop.name}}</view>
+      <view class="hero-addr">{{shop.addr}}</view>
+    </view>
+  </view>
+  <text class="venue-intro">{{shop.intro}}</text>
+
+  <view class="live-grid">
+    <view class="live-cell"><view class="k">当前人数</view><view class="v">{{live.crowd}}<text> 人</text></view></view>
+    <view class="live-cell"><view class="k">排队订单</view><view class="v">{{live.orders}}<text> 单</text></view></view>
+    <view class="live-cell"><view class="k">预计等待</view><view class="v">{{live.wait}}<text> 分钟</text></view></view>
+    <view class="live-cell"><view class="k">营业状态</view><view class="v st">{{live.status}}</view></view>
+  </view>
+
+  <block wx:if="{{!ordered}}">
+    <view class="sec-head"><text class="sh-b">预约与购买</text><text class="sh-s">到店自提 · 先预约后支付</text></view>
+    <view class="so-item" wx:for="{{items}}" wx:key="name">
+      <view class="so-item-info">
+        <view class="so-item-name">{{item.name}}</view>
+        <view class="so-item-price">¥{{item.price}}</view>
+      </view>
+      <view class="stepper">
+        <view class="st-btn" data-i="{{index}}" data-d="-1" bindtap="step">−</view>
+        <view class="st-qty">{{item.qty}}</view>
+        <view class="st-btn" data-i="{{index}}" data-d="1" bindtap="step">＋</view>
+      </view>
+    </view>
+    <view class="so-time">
+      <view class="so-slot {{slotIdx === index ? 'on' : ''}}" wx:for="{{slots}}" wx:key="label" data-i="{{index}}" bindtap="pickSlot">
+        <view class="ss-label">{{item.label}}</view>
+        <view class="ss-time">{{item.time}}</view>
+      </view>
+    </view>
+    <view class="so-total-row"><text class="tk-total-label">合计</text><text class="tk-total">¥ {{total}}</text></view>
+    <button class="pay-btn {{total > 0 ? '' : 'off'}}" disabled="{{total === 0}}" bindtap="pay">{{total > 0 ? '预约并支付 ¥' + total : '预约并支付'}}</button>
+  </block>
+  <block wx:else>
+    <view class="pay-success">
+      <view class="ps-check">✓</view>
+      <view class="ps-title">预约成功</view>
+      <view class="ps-sub">{{shop.name}} · {{orderSlot}}</view>
+      <view class="ps-code">{{orderCode}}</view>
+      <view class="ps-note">到店出示取件码，店员核对后取货</view>
+      <button class="pay-btn ghost" bindtap="viewOrders">查看订单</button>
+      <button class="pay-btn ghost" bindtap="goBack">完成</button>
+    </view>
+  </block>
+
+  <view class="sec-head"><text class="sh-b">附近演出</text><text class="sh-s">距离按步行估算 · 点击查看</text></view>
+  <view class="perf-item" wx:for="{{nearby}}" wx:key="vid" data-vid="{{item.vid}}" bindtap="openVenue">
+    <view class="perf-time"><view class="pt-hm">{{item.hm}}</view><view class="pt-day">{{item.label}}</view></view>
+    <view class="perf-main">
+      <view class="perf-title">{{item.title}}</view>
+      <view class="perf-meta"><text>{{item.venue}}</text><text>{{item.room}}</text><text>步行约{{item.mins}}分钟</text></view>
+    </view>
+  </view>
+</view>

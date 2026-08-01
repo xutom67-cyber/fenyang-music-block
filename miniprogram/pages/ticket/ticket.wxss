@@ -1,0 +1,49 @@
+page { background: #F4F7F2; }
+.page { padding-bottom: 60rpx; }
+.sub-header { display: flex; align-items: center; gap: 20rpx; padding: 20rpx 28rpx 12rpx; }
+.back { width: 60rpx; height: 60rpx; border-radius: 50%; background: #EDF1EC; color: #6E7A71; font-size: 34rpx; display: flex; align-items: center; justify-content: center; }
+.sub-title { font-size: 30rpx; font-weight: 800; flex: 1; }
+.spacer { width: 60rpx; }
+.ticket-poster { position: relative; margin: 8rpx 24rpx 0; height: 360rpx; border-radius: 32rpx; overflow: hidden; padding: 32rpx; box-sizing: border-box; display: flex; flex-direction: column; }
+.tp-deco { position: absolute; color: rgba(255,255,255,.22); font-size: 90rpx; }
+.tp-d1 { right: 20rpx; top: 12rpx; transform: rotate(18deg); }
+.tp-d2 { left: 26rpx; bottom: 6rpx; transform: rotate(-12deg); font-size: 70rpx; }
+.tp-head { display: flex; align-items: center; gap: 16rpx; }
+.tp-glyph { width: 54rpx; height: 54rpx; border-radius: 50%; background: #fff; color: #5E74A8; font-size: 26rpx; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.tp-venuename { color: #fff; font-size: 22rpx; font-weight: 700; letter-spacing: 2rpx; }
+.tp-brand { position: absolute; right: 32rpx; top: 36rpx; color: rgba(255,255,255,.85); font-size: 17rpx; letter-spacing: 4rpx; }
+.tp-title { margin-top: 46rpx; color: #2F3F35; font-size: 40rpx; font-weight: 800; }
+.tp-sub { color: #4A5A50; font-size: 20rpx; margin-top: 14rpx; opacity: .9; }
+.tp-bottom { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+.tp-when { font-size: 27rpx; font-weight: 800; }
+.tp-price { background: rgba(255,255,255,.92); border-radius: 999rpx; padding: 8rpx 24rpx; font-size: 23rpx; font-weight: 800; }
+.tk-meta { display: flex; margin: 24rpx 24rpx 0; background: #fff; border-radius: 28rpx; padding: 24rpx 12rpx; box-shadow: 0 6rpx 24rpx rgba(47,63,53,.05); }
+.tk-meta-item { flex: 1; text-align: center; padding: 0 8rpx; }
+.tk-meta-item .k { font-size: 20rpx; color: #9AA49B; }
+.tk-meta-item .v { font-size: 23rpx; font-weight: 700; margin-top: 6rpx; line-height: 1.4; }
+.sec-head { display: flex; justify-content: space-between; align-items: center; padding: 32rpx 32rpx 16rpx; }
+.sh-b { font-size: 28rpx; font-weight: 800; }
+.sh-s { font-size: 20rpx; color: #9AA49B; }
+.tk-tier { display: flex; align-items: center; gap: 20rpx; margin: 0 24rpx 18rpx; background: #fff; border-radius: 28rpx; padding: 24rpx 28rpx; box-shadow: 0 6rpx 24rpx rgba(47,63,53,.05); }
+.tk-tier-info { flex: 1; }
+.tk-tier-name { font-size: 26rpx; font-weight: 700; }
+.tk-tier-price { font-size: 22rpx; color: #C9962F; font-weight: 700; margin-top: 4rpx; }
+.stepper { display: flex; align-items: center; gap: 20rpx; }
+.st-btn { width: 56rpx; height: 56rpx; border-radius: 50%; border: 1.5px solid #CFE3D4; background: #F2F8F3; color: #4F8F71; font-size: 30rpx; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.st-qty { min-width: 44rpx; text-align: center; font-size: 30rpx; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pay-methods { display: flex; gap: 16rpx; margin: 0 24rpx; }
+.pay-chip { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; border: 1.5px solid #E4E8E2; border-radius: 24rpx; padding: 20rpx 8rpx; font-size: 24rpx; font-weight: 600; }
+.pay-chip.on { border-color: #5E9C80; background: #F0F7EF; color: #3E7A5F; }
+.tk-total-row { display: flex; justify-content: space-between; align-items: baseline; margin: 28rpx 48rpx 20rpx; font-size: 26rpx; color: #5F6B62; }
+.tk-total { font-size: 44rpx; font-weight: 800; color: #2F3F35; font-variant-numeric: tabular-nums; }
+.pay-btn { width: calc(100% - 48rpx); margin: 0 24rpx 20rpx; padding: 28rpx; border-radius: 32rpx; background: #5E9C80; color: #fff; font-size: 30rpx; font-weight: 800; border: none; }
+.pay-btn.off { background: #C9D6CC; color: #fff; }
+.pay-btn.ghost { background: #EDF1EC; color: #4F8F71; }
+.pay-btn::after { border: none; }
+.pay-success { text-align: center; padding: 80rpx 40rpx 40rpx; }
+.ps-check { width: 136rpx; height: 136rpx; border-radius: 50%; margin: 0 auto 32rpx; background: #5E9C80; color: #fff; font-size: 68rpx; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.ps-title { font-size: 36rpx; font-weight: 800; }
+.ps-sub { font-size: 24rpx; color: #8B968E; margin-top: 10rpx; }
+.ps-code { margin: 40rpx auto 12rpx; font-size: 48rpx; font-weight: 800; letter-spacing: 6rpx; font-variant-numeric: tabular-nums; color: #2F3F35; }
+.ps-barcode { margin: 20rpx auto; font-size: 24rpx; letter-spacing: 2rpx; color: #6E7A71; background: #fff; border: 1px dashed #D8DED4; border-radius: 16rpx; padding: 16rpx; width: 60%; }
+.ps-note { font-size: 22rpx; color: #9AA49B; margin: 20rpx 40rpx 40rpx; line-height: 1.7; }

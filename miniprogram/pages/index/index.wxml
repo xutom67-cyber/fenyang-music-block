@@ -1,0 +1,83 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="home-head">
+    <view class="hh-brand">
+      <view class="brand-logo">♪</view>
+      <view>
+        <view class="brand-title">汾阳路音乐街区</view>
+        <view class="brand-sub">衡复风貌区 · 上音片区</view>
+      </view>
+    </view>
+    <view class="hh-loc">◉ 上海 · 衡复</view>
+  </view>
+
+  <view class="hh-search" bindtap="onSearch"><text class="hs-ic">⌕</text><text>搜索演出 / 场地 / 商店</text></view>
+
+  <view class="map-card">
+    <view class="map-top">
+      <view class="map-title">街区地图</view>
+      <view class="layer-switch">
+        <view class="ls-btn {{layer === 'base' ? 'on' : ''}}" data-l="base" bindtap="setLayer">基础</view>
+        <view class="ls-btn {{layer === 'heat' ? 'on' : ''}}" data-l="heat" bindtap="setLayer">热力</view>
+        <view class="ls-btn {{layer === 'show' ? 'on' : ''}}" data-l="show" bindtap="setLayer">演出</view>
+      </view>
+    </view>
+    <view class="map-holder">
+      <map-view id="homeMap" mode="map" layer="{{layer}}" bind:markertap="onMarkerTap"></map-view>
+    </view>
+    <view class="legend">
+      <view class="lg-item"><view class="lg" style="background:#D9E9D6"></view>主街区</view>
+      <view class="lg-item"><view class="lg" style="background:#F6F6F3"></view>周边街区</view>
+      <view class="lg-item"><view class="lg-dia"></view>景点</view>
+      <view class="lg-item"><view class="lg-ven"></view>活动场地</view>
+      <view class="lg-item"><view class="lg-dot"></view>商店</view>
+      <view class="lg-item"><view class="lg-node">♪</view>表演空间</view>
+    </view>
+    <view class="layer-hint">{{layer === 'base' ? '基础图层 · 拖动平移 / 双指或按钮缩放 / 点击标记查看详情' : layer === 'heat' ? '实时热力 · 人群密度实时模拟' : '演出图层 · 每个场地显示最近一场演出倒计时'}}</view>
+  </view>
+
+  <swiper class="home-banner" autoplay circular interval="4000" indicator-dots="{{false}}" bindchange="onBanner">
+    <swiper-item wx:for="{{banners}}" wx:key="go" bindtap="goBanner">
+      <view class="hb-slide" style="background:{{item.grad}}">
+        <view class="hb-note">{{item.note}}</view>
+        <view class="hb-t">{{item.t}}</view>
+        <view class="hb-s">{{item.s}}</view>
+        <view class="hb-cta">去看看 ›</view>
+      </view>
+    </swiper-item>
+  </swiper>
+  <view class="home-dots">
+    <view wx:for="{{banners}}" wx:key="go" class="hd {{bannerIdx === index ? 'on' : ''}}"></view>
+  </view>
+
+  <view class="home-entries">
+    <view class="he" data-go="history" bindtap="goEntry"><view class="he-ic">▤</view><text>历史</text></view>
+    <view class="he" data-go="venues" bindtap="goEntry"><view class="he-ic">♪</view><text>场地</text></view>
+    <view class="he" data-go="shops" bindtap="goEntry"><view class="he-ic">◍</view><text>商店</text></view>
+    <view class="he" data-go="profile" bindtap="goEntry"><view class="he-ic">◉</view><text>我的</text></view>
+  </view>
+
+  <view class="sec-head"><text class="sh-b">今日演出</text><text class="sh-s">最近三场 · 实时倒计时</text></view>
+  <view class="hs-card" wx:for="{{shows}}" wx:key="vid" data-vid="{{item.vid}}" bindtap="openShow">
+    <view class="hs-time">
+      <view class="hs-hm">{{item.hm}}</view>
+      <view class="hs-day">{{item.label}}</view>
+    </view>
+    <view class="hs-main">
+      <view class="hs-title">{{item.title}}</view>
+      <view class="hs-meta">{{item.venue}} · {{item.room}}</view>
+    </view>
+    <view class="hs-cd">{{item.cd}}</view>
+  </view>
+
+  <view class="sec-head"><text class="sh-b">人气商店</text><text class="sh-s">按评分推荐</text></view>
+  <scroll-view class="home-shops" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="hshop" wx:for="{{shops}}" wx:key="id" data-id="{{item.id}}" bindtap="openShop">
+      <view class="hshop-glyph">{{item.glyph}}</view>
+      <view class="hshop-name">{{item.name}}</view>
+      <view class="hshop-type">{{item.type}}</view>
+      <view class="hshop-rate">★ {{item.rate}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="home-tip">♪ 汾阳路 · 音乐正在发生</view>
+</view>

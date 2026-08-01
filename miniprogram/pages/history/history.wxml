@@ -1,0 +1,12 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="page-sub"><text class="sub-title">场地历史介绍</text></view>
+  <view class="hist-img-wrap">
+    <image class="hist-img" src="/images/overview-render.jpg" mode="widthFix"></image>
+    <view class="hist-img-cap">鸟瞰效果图 · 音乐街区更新方案</view>
+  </view>
+  <view class="hist-sec" wx:for="{{sections}}" wx:key="title">
+    <view class="hist-title">{{item.title}}</view>
+    <text class="hist-body">{{item.body}}</text>
+  </view>
+  <view class="footer-note">上方花园 · 音乐广场与各场地可在首页地图查看</view>
+</view>

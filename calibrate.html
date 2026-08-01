@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>地图校准 · 大小 / 位置 / 风格</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  :root { --green: #7FB69A; --ink: #2F3F35; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: #F2F4EF; color: var(--ink); font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; display: flex; flex-direction: column; }
+  header.cal-head { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: #fff; border-bottom: 1px solid #E6E8E0; box-shadow: 0 2px 8px rgba(47,63,53,.05); }
+  .cal-head h1 { font-size: 16px; margin: 0; font-weight: 700; }
+  .cal-head .sub { font-size: 12px; color: #8B968E; }
+  .cal-head .spacer { flex: 1; }
+  .btn { border: 1px solid #D8DCD4; background: #fff; border-radius: 10px; padding: 7px 14px; font-size: 13px; cursor: pointer; color: var(--ink); transition: all .15s; }
+  .btn:hover { border-color: var(--green); }
+  .btn.primary { background: var(--green); border-color: var(--green); color: #fff; font-weight: 700; }
+  .btn.primary:hover { background: #6DA888; }
+  .btn.danger { color: #C0703C; }
+  .btn.sm { padding: 5px 10px; font-size: 12px; }
+  main { flex: 1; display: flex; min-height: 0; }
+  .stage { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; min-width: 0; }
+  .stage-inner { position: relative; background: #fff; border-radius: 18px; box-shadow: 0 8px 28px rgba(47,63,53,.10); padding: 14px; max-width: 100%; max-height: 100%; }
+  #map { display: block; width: auto; height: calc(100vh - 150px); max-height: 820px; background: #FBFCF9; cursor: grab; touch-action: none; }
+  #map:active { cursor: grabbing; }
+  .stage-tip { position: absolute; left: 24px; bottom: 24px; background: rgba(255,255,255,.92); border: 1px solid #E4E6DF; border-radius: 10px; padding: 8px 12px; font-size: 11.5px; color: #7B877E; pointer-events: none; }
+  .panel { width: 300px; background: #fff; border-left: 1px solid #E6E8E0; padding: 16px 18px; overflow-y: auto; }
+  .panel h2 { font-size: 13px; margin: 18px 0 8px; color: #8B968E; font-weight: 700; letter-spacing: .5px; }
+  .panel h2:first-child { margin-top: 4px; }
+  .styles { display: flex; flex-direction: column; gap: 8px; }
+  .style-card { display: flex; align-items: center; gap: 10px; border: 1.5px solid #E4E6DF; border-radius: 12px; padding: 9px 12px; cursor: pointer; transition: all .15s; background: #FBFCF9; }
+  .style-card:hover { border-color: #BFD8C0; }
+  .style-card.on { border-color: var(--green); background: #F0F7EF; box-shadow: 0 2px 8px rgba(127,182,154,.15); }
+  .style-swatch { width: 44px; height: 30px; border-radius: 7px; flex: none; background-size: cover; background-position: center; border: 1px solid #E0E4DA; }
+  .style-card .t { font-size: 13px; font-weight: 700; }
+  .style-card .d { font-size: 11px; color: #8B968E; margin-top: 1px; }
+  .style-card .ok { margin-left: auto; color: var(--green); font-size: 15px; font-weight: 800; opacity: 0; }
+  .style-card.on .ok { opacity: 1; }
+  .ctl { margin: 10px 0; }
+  .ctl .row { display: flex; justify-content: space-between; font-size: 12px; color: #5F6B62; margin-bottom: 4px; }
+  .ctl .row b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .ctl input[type=range] { width: 100%; accent-color: var(--green); }
+  .ctl .hint { font-size: 11px; color: #A9B2AA; margin-top: 3px; }
+  .check-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; margin: 10px 0 4px; }
+  .check-row input { accent-color: var(--green); width: 16px; height: 16px; }
+  .status { margin-top: 16px; font-size: 11.5px; line-height: 1.7; color: #8B968E; background: #F6F8F3; border: 1px dashed #DCE4D4; border-radius: 10px; padding: 10px 12px; }
+  #toast { position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%); background: rgba(47,63,53,.92); color: #fff; font-size: 13px; padding: 10px 18px; border-radius: 12px; z-index: 99; }
+  @media (max-width: 900px) { main { flex-direction: column; } .panel { width: 100%; border-left: none; border-top: 1px solid #E6E8E0; } .stage-inner { padding: 8px; } #map { height: 46vh; } }
+</style>
+</head>
+<body>
+<header class="cal-head">
+  <h1>地图校准</h1>
+  <span class="sub">确定地图的 <b>大小 / 位置 / 风格</b>，保存后应用到小程序主页</span>
+  <span class="spacer"></span>
+  <button class="btn" id="btn-reset">恢复默认</button>
+  <button class="btn primary" id="btn-save">✓ 保存并应用</button>
+  <a class="btn" href="index.html" target="_blank">打开小程序主页</a>
+</header>
+<main>
+  <div class="stage">
+    <div class="stage-inner">
+      <svg id="map" viewBox="0 0 760 880"></svg>
+      <div class="stage-tip" id="stage-tip">拖动地图 = 调整位置 · 滚轮 = 调整大小</div>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>地图风格</h2>
+    <div class="styles" id="style-group">
+      <div class="style-card" data-style="hand">
+        <div class="style-swatch" style="background:#D9E9D6"></div>
+        <div><div class="t">手绘 · 小清新</div><div class="d">淡绿街区 + 手绘风（当前样式）</div></div>
+        <span class="ok">✓</span>
+      </div>
+      <div class="style-card" data-style="sat">
+        <div class="style-swatch" style="background-image:linear-gradient(#5C7A4F,#8FA97C 55%,#B9C9A8)"></div>
+        <div><div class="t">写实 · 卫星影像</div><div class="d">真实卫星底图 + 街区标记叠加</div></div>
+        <span class="ok">✓</span>
+      </div>
+      <div class="style-card" data-style="map">
+        <div class="style-swatch" style="background-image:linear-gradient(#F4F0E6,#F0EDE2 60%,#DDE7D2)"></div>
+        <div><div class="t">写实 · 标准地图</div><div class="d">街道网底图 + 街区标记叠加</div></div>
+        <span class="ok">✓</span>
+      </div>
+    </div>
+
+    <h2>地图大小</h2>
+    <div class="ctl">
+      <div class="row"><span>横向缩放</span><b id="sx-val">100%</b></div>
+      <input type="range" id="sx" min="55" max="180" step="1">
+    </div>
+    <div class="ctl">
+      <div class="row"><span>纵向缩放</span><b id="sy-val">100%</b></div>
+      <input type="range" id="sy" min="55" max="180" step="1">
+      <div class="hint">滚轮 = 横向纵向同步缩放（以光标为中心）</div>
+    </div>
+
+    <h2>地图朝向</h2>
+    <div class="ctl">
+      <div class="row"><span>旋转角度</span><b id="rot-val">0°</b></div>
+      <input type="range" id="rot" min="-25" max="25" step="0.5">
+      <div class="hint">正数 = 顺时针 · 用于把街区道路对齐到真实底图方向</div>
+    </div>
+
+    <h2>地图位置</h2>
+    <div class="ctl">
+      <div class="row"><span>横向偏移（X）</span><b id="ox-val">0</b></div>
+      <input type="range" id="ox" min="-200" max="200" step="1">
+    </div>
+    <div class="ctl">
+      <div class="row"><span>纵向偏移（Y）</span><b id="oy-val">0</b></div>
+      <input type="range" id="oy" min="-160" max="160" step="1">
+      <div class="hint">拖动地图调整 · 写实风格下用于把街区标记对齐到底图</div>
+    </div>
+
+    <h2 id="ref-head">参考图对齐（手绘风格）</h2>
+    <div class="check-row">
+      <input type="checkbox" id="ref-on"><label for="ref-on">叠加真实地块截图作对齐参考</label>
+    </div>
+    <div class="ctl">
+      <div class="row"><span>参考图透明度</span><b id="refop-val">50%</b></div>
+      <input type="range" id="ref-op" min="5" max="100" step="1">
+    </div>
+
+    <div class="status" id="status">
+      调整顺序建议：先选风格 → 旋转对齐方向 → 横/纵缩放调比例 → 拖动调位置。<br>
+      写实风格使用高德地图底图（需联网）；保存后回到小程序主页即生效。
+    </div>
+  </div>
+</main>
+<div id="toast" hidden></div>
+<script src="data.js"></script>
+<script src="calibrate.js"></script>
+</body>
+</html>

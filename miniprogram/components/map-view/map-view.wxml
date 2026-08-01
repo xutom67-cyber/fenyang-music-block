@@ -1,0 +1,11 @@
+<view class="mv-wrap">
+  <map id="mvMap" class="mv-map"
+    longitude="{{center.lng}}" latitude="{{center.lat}}" scale="{{scale}}"
+    enable-satellite="{{satellite}}" markers="{{markers}}" polyline="{{polylines}}" circles="{{circles}}"
+    enable-zoom="{{true}}" enable-scroll="{{true}}" enable-rotate="{{false}}"
+    show-location="{{false}}" bindmarkertap="onMarkerTap"></map>
+  <view class="mv-zoom">
+    <view class="mv-zbtn" catchtap="zoomIn">＋</view>
+    <view class="mv-zbtn" catchtap="zoomOut">－</view>
+  </view>
+</view>

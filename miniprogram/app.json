@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/splash/splash",
+    "pages/index/index",
+    "pages/history/history",
+    "pages/venues/venues",
+    "pages/venue-detail/venue-detail",
+    "pages/shops/shops",
+    "pages/shop-detail/shop-detail",
+    "pages/ticket/ticket",
+    "pages/profile/profile",
+    "pages/profile-edit/profile-edit",
+    "pages/qr/qr"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#F4F7F2",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#9AA49B",
+    "selectedColor": "#3E7A5F",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "images/tabbar/home.png", "selectedIconPath": "images/tabbar/home-a.png" },
+      { "pagePath": "pages/history/history", "text": "历史", "iconPath": "images/tabbar/history.png", "selectedIconPath": "images/tabbar/history-a.png" },
+      { "pagePath": "pages/venues/venues", "text": "场地", "iconPath": "images/tabbar/venues.png", "selectedIconPath": "images/tabbar/venues-a.png" },
+      { "pagePath": "pages/shops/shops", "text": "商店", "iconPath": "images/tabbar/shops.png", "selectedIconPath": "images/tabbar/shops-a.png" },
+      { "pagePath": "pages/profile/profile", "text": "我的", "iconPath": "images/tabbar/profile.png", "selectedIconPath": "images/tabbar/profile-a.png" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

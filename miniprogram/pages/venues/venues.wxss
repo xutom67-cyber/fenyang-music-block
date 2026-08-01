@@ -1,0 +1,20 @@
+page { background: #F4F7F2; }
+.page { padding-bottom: 60rpx; }
+.page-sub { display: flex; align-items: center; justify-content: space-between; padding: 24rpx 32rpx 20rpx; }
+.sub-title { font-size: 34rpx; font-weight: 800; }
+.sec-head { display: flex; justify-content: space-between; align-items: center; padding: 16rpx 32rpx; }
+.sh-b { font-size: 28rpx; font-weight: 800; }
+.sh-s { font-size: 20rpx; color: #9AA49B; }
+.venue-card { display: flex; align-items: center; gap: 24rpx; margin: 0 24rpx 20rpx; background: #fff; border-radius: 28rpx; padding: 26rpx 28rpx; box-shadow: 0 6rpx 24rpx rgba(47,63,53,.05); }
+.vc-glyph { width: 76rpx; height: 76rpx; border-radius: 24rpx; background: #EDF6EF; border: 1.5px solid #CFE3D4; color: #4F8F71; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 30rpx; flex-shrink: 0; }
+.vc-info { flex: 1; min-width: 0; }
+.vc-name { font-size: 27rpx; font-weight: 700; }
+.vc-addr { font-size: 21rpx; color: #9AA49B; margin-top: 4rpx; }
+.vc-meta { display: flex; align-items: center; gap: 16rpx; margin-top: 10rpx; }
+.vc-rate { font-size: 23rpx; color: #C9962F; font-weight: 700; }
+.vc-crowd { font-size: 20rpx; padding: 4rpx 16rpx; border-radius: 999rpx; font-weight: 600; }
+.vc-crowd.c1, .vc-crowd.c2 { background: #E8F4EC; color: #4E9A6B; }
+.vc-crowd.c3 { background: #FBF3DC; color: #B08A2E; }
+.vc-crowd.c4, .vc-crowd.c5 { background: #FBE9E4; color: #C0703C; }
+.vc-arrow { color: #B0B9B0; font-size: 34rpx; }
+.footer-note { text-align: center; font-size: 20rpx; color: #A9B2AA; margin: 40rpx 40rpx 0; line-height: 1.7; }

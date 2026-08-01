@@ -1,0 +1,49 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="sub-header">
+    <view class="back" bindtap="goBack">‹</view>
+    <view class="sub-title">{{venue.name}}</view>
+    <view class="spacer"></view>
+  </view>
+  <view class="venue-hero">
+    <view class="hero-glyph">{{venue.glyph}}</view>
+    <view class="hero-info">
+      <view class="hero-name">{{venue.name}}</view>
+      <view class="hero-addr">{{venue.addr}}</view>
+      <view class="hero-rate">★ {{venue.rating}} · {{venue.n}} 人评分</view>
+    </view>
+  </view>
+  <text class="venue-intro">{{venue.intro}}</text>
+
+  <view class="sec-head"><text class="sh-b">表演时间表</text><text class="sh-s">最近一场已加粗 · 实时倒计时</text></view>
+  <view class="perf-item {{item.past ? 'past' : ''}} {{item.next ? 'now' : ''}}" wx:for="{{perfs}}" wx:key="idx" data-idx="{{item.idx}}" bindtap="buy">
+    <view class="perf-time">
+      <view class="pt-hm">{{item.hm}}</view>
+      <view class="pt-day">{{item.label}}</view>
+    </view>
+    <view class="perf-main">
+      <view class="perf-title">{{item.title}}</view>
+      <view class="perf-meta"><text>{{item.room}}</text><text>约 {{item.dur}}</text></view>
+    </view>
+    <view class="perf-right">
+      <view class="cd {{item.state}}">{{item.cd}}</view>
+      <view class="buy-btn {{item.past ? 'off' : ''}}">{{item.past ? '已结束' : '购票'}}</view>
+      <view class="cd-bought" wx:if="{{item.bought}}">已购 {{item.bought}} 张</view>
+    </view>
+  </view>
+
+  <view class="sec-head"><text class="sh-b">现场状态</text><text class="sh-s">数据实时模拟</text></view>
+  <view class="status-card">
+    <view class="st-row1">
+      <text class="density-label">人群密度</text>
+      <view class="density-bars">
+        <view wx:for="{{[1,2,3,4,5]}}" wx:key="*this" class="db {{item <= venue.level ? 'on' : ''}}"></view>
+      </view>
+      <text class="st-pct">{{venue.pct}}%</text>
+    </view>
+    <view class="st-row2">
+      <view class="st-chip"><view class="k">预计通行</view><view class="v">{{venue.pass}}<text> 分钟</text></view></view>
+      <view class="st-chip"><view class="k">趋势</view><view class="v">{{venue.trend}}</view></view>
+    </view>
+  </view>
+  <view class="footer-note">场地与每场演出均可评分 · 点击演出卡片购票</view>
+</view>

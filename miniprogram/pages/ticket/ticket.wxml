@@ -1,0 +1,65 @@
+<view class="page" style="padding-top:{{statusBarH}}px;">
+  <view class="sub-header">
+    <view class="back" bindtap="goBack">‹</view>
+    <view class="sub-title">购票</view>
+    <view class="spacer"></view>
+  </view>
+
+  <block wx:if="{{!paid}}">
+    <view class="ticket-poster" style="background:linear-gradient(135deg,{{accent[0]}},{{accent[1]}})">
+      <view class="tp-deco tp-d1">♪</view>
+      <view class="tp-deco tp-d2">♫</view>
+      <view class="tp-head">
+        <view class="tp-glyph">{{venue.glyph}}</view>
+        <text class="tp-venuename">{{venue.name}}</text>
+      </view>
+      <text class="tp-brand">汾阳路音乐街区</text>
+      <view class="tp-title">{{perf.title}}</view>
+      <view class="tp-sub">{{venue.name}} · {{perf.room}} · 约 {{perf.dur}}</view>
+      <view class="tp-bottom">
+        <text class="tp-when" style="color:{{accent[2]}}">{{perf.label}} {{perf.hm}}</text>
+        <view class="tp-price" style="color:{{accent[2]}}">¥{{minPrice}} 起</view>
+      </view>
+    </view>
+
+    <view class="tk-meta">
+      <view class="tk-meta-item"><view class="k">时间</view><view class="v">{{perf.label}} {{perf.hm}}</view></view>
+      <view class="tk-meta-item"><view class="k">场地</view><view class="v">{{venue.name}} · {{perf.room}}</view></view>
+      <view class="tk-meta-item"><view class="k">时长</view><view class="v">约 {{perf.dur}}</view></view>
+    </view>
+
+    <view class="sec-head"><text class="sh-b">选择票档</text><text class="sh-s">每档最多 9 张</text></view>
+    <view class="tk-tier" wx:for="{{tiers}}" wx:key="name">
+      <view class="tk-tier-info">
+        <view class="tk-tier-name">{{item.name}}</view>
+        <view class="tk-tier-price">¥{{item.price}}</view>
+      </view>
+      <view class="stepper">
+        <view class="st-btn" data-i="{{index}}" data-d="-1" bindtap="step">−</view>
+        <view class="st-qty">{{item.qty}}</view>
+        <view class="st-btn" data-i="{{index}}" data-d="1" bindtap="step">＋</view>
+      </view>
+    </view>
+
+    <view class="sec-head"><text class="sh-b">支付方式</text></view>
+    <view class="pay-methods">
+      <view class="pay-chip {{payMethod === item.id ? 'on' : ''}}" wx:for="{{methods}}" wx:key="id" data-m="{{item.id}}" bindtap="pickMethod">{{item.name}}</view>
+    </view>
+
+    <view class="tk-total-row"><text class="tk-total-label">合计</text><text class="tk-total">¥ {{total}}</text></view>
+    <button class="pay-btn {{total > 0 ? '' : 'off'}}" disabled="{{total === 0}}" bindtap="pay">{{total > 0 ? '确认支付 ¥' + total : '确认支付'}}</button>
+  </block>
+
+  <block wx:else>
+    <view class="pay-success">
+      <view class="ps-check">✓</view>
+      <view class="ps-title">支付成功</view>
+      <view class="ps-sub">已出票 · 请妥善保管取票码</view>
+      <view class="ps-code">{{code}}</view>
+      <view class="ps-barcode">{{barcodeTxt}}</view>
+      <view class="ps-note">演出前 30 分钟凭取票码在入口处换取纸质票入场</view>
+      <button class="pay-btn ghost" bindtap="viewOrders">查看订单</button>
+      <button class="pay-btn ghost" bindtap="goBack">完成</button>
+    </view>
+  </block>
+</view>

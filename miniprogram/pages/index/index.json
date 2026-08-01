@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "map-view": "/components/map-view/map-view"
+  }
+}

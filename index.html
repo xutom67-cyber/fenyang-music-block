@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>汾阳路音乐街区 · 小程序交互原型</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stage">
+  <header class="page-head">
+    <h1>汾阳路音乐街区 · 小程序交互原型</h1>
+    <p>上海音乐学院汾阳路校区所在街区（衡复音乐街区 · 汾阳路片区）<br>
+    首页为实时卫星地图背景，音乐主题设计，可跳转历史、场地、商店与「我的」页面。<br>
+    各页面右上角「编辑」可调整地图标记位置、街区颜色与图纸排版。</p>
+  </header>
+
+  <div class="phone">
+    <!-- 状态栏 -->
+    <div class="statusbar">
+      <span class="sb-time">9:41</span>
+      <span class="sb-icons">
+        <i class="sig"><b></b><b></b><b></b><b></b></i>
+        <i class="wifi"></i>
+        <i class="bat"><b></b></i>
+      </span>
+    </div>
+
+    <!-- 进入过渡页 -->
+    <div id="splash" class="splash">
+      <div class="sp-bg" style="background-image:url('images/overview-render.jpg')"></div>
+      <div class="sp-veil"></div>
+      <div class="sp-content">
+        <div class="sp-logo">♪</div>
+        <div class="sp-title">欢迎来到<br>汾阳音乐街区</div>
+        <div class="sp-sub">衡复风貌区 · 上音片区</div>
+        <button class="sp-enter" id="btn-enter">点击进入 <i>›</i></button>
+        <div class="sp-foot">MUSIC BLOCK · FENYANG ROAD</div>
+      </div>
+    </div>
+
+    <!-- ==================== 首页：Manner 风格完整页面 ==================== -->
+    <div class="screen" id="screen-main">
+      <div class="home-head">
+        <div class="hh-brand">
+          <span class="brand-logo">♪</span>
+          <div>
+            <div class="brand-title">汾阳路音乐街区</div>
+            <div class="brand-sub">衡复风貌区 · 上音片区</div>
+          </div>
+        </div>
+        <span class="hh-loc">◉ 上海 · 衡复</span>
+      </div>
+
+      <div class="hh-search" id="hh-search"><i>⌕</i><span>搜索演出 / 场地 / 商店</span></div>
+
+      <div class="map-card home-map">
+        <div class="map-top">
+          <h2>街区地图</h2>
+          <div class="layer-switch" id="layer-switch">
+            <button data-layer="base" class="on">基础</button>
+            <button data-layer="heat">热力</button>
+            <button data-layer="show">演出</button>
+          </div>
+        </div>
+        <div class="map-holder">
+          <svg id="map" viewBox="0 0 760 880" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="map-edit-btns">
+            <button class="mbtn btn-edit" title="编辑标记 / 街区">✏️</button>
+            <a class="mbtn calib-link" href="calibrate.html" target="_blank" title="校准地图大小 / 位置 / 风格">⚙</a>
+          </div>
+          <div class="map-zoom">
+            <button id="zoom-in" title="放大">＋</button>
+            <button id="zoom-out" title="缩小">－</button>
+            <button id="zoom-reset" title="还原视图">⌂</button>
+          </div>
+        </div>
+        <div class="legend">
+          <span><i class="lg" style="background:#D9E9D6"></i>主街区</span>
+          <span><i class="lg" style="background:#F6F6F3"></i>周边街区</span>
+          <span><i class="lg-dia" style="background:#7FB69A"></i>景点</span>
+          <span><i class="lg-ven" style="background:#fff"></i>活动场地</span>
+          <span><i class="lg-dot"></i>商店</span>
+          <span><i class="lg-node">♪</i>表演空间</span>
+        </div>
+        <div class="layer-hint" id="layer-hint">基础图层 · 点击场地 / 商店查看详情</div>
+      </div>
+
+      <div class="home-banner" id="home-banner"></div>
+      <div class="home-dots" id="home-dots"></div>
+
+      <div class="home-entries">
+        <button class="he" data-go="project"><i>▤</i><span>历史</span></button>
+        <button class="he" data-go="venues"><i>♪</i><span>场地</span></button>
+        <button class="he" data-go="shops"><i>◍</i><span>商店</span></button>
+        <button class="he" data-go="profile"><i>◉</i><span>我的</span></button>
+      </div>
+
+      <div class="home-sec">
+        <div class="sec-head"><b>今日演出</b><span>最近三场 · 实时倒计时</span></div>
+        <div id="home-shows"></div>
+      </div>
+
+      <div class="home-sec">
+        <div class="sec-head"><b>人气商店</b><span>按评分推荐</span></div>
+        <div class="home-shops" id="home-shops"></div>
+      </div>
+
+      <div class="home-tip">♪ 汾阳路 · 音乐正在发生</div>
+    </div>
+
+    <!-- ==================== 二级页面：场地历史介绍 ==================== -->
+    <div class="screen" id="screen-project" hidden>
+      <div class="page-sub">
+        <div class="sub-title">场地历史介绍</div>
+        <span class="sub-spacer"></span>
+      </div>
+      <div class="sub-body">
+        <div class="hist-img-wrap">
+          <img class="hist-img" src="images/overview-render.jpg" alt="鸟瞰效果图" loading="lazy">
+          <div class="hist-img-cap">鸟瞰效果图 · 音乐街区更新方案</div>
+        </div>
+        <div class="hist-sec">
+          <div class="hist-title">百年衡复</div>
+          <p class="hist-body">该地块隶属衡山路—复兴路历史文化风貌区，源自法租界时期的“西区”。1920—1930 年代，花园住宅、高级公寓与梧桐林荫道在此大量兴建，至今仍是上海历史风貌保存最完整的街区之一。</p>
+        </div>
+        <div class="hist-sec">
+          <div class="hist-title">音乐学府</div>
+          <p class="hist-body">上海音乐学院源自 1927 年创办的国立音乐院，是中国第一所独立建制的高等音乐学府。汾阳路校区坐落于地块东侧、紧邻汾阳路，校园内绿树掩映、琴声不绝。</p>
+        </div>
+        <div class="hist-sec">
+          <div class="hist-title">花园里弄</div>
+          <p class="hist-body">上方花园与相邻的新康花园均为 1930 年代建成的花园住宅小区，红瓦坡顶、庭院错落。如今新康花园的别墅陆续改造为工作坊、餐厅与咖啡馆，成为街区日常的一部分。</p>
+        </div>
+        <div class="hist-sec">
+          <div class="hist-title">音乐街区</div>
+          <p class="hist-body">近年上交音乐厅、上音歌剧院相继落成，黑石公寓更新为书店与音乐空间，汾阳路乐器街与上方花园音乐广场共同生长——“音乐”成为这条街区的日常底色。</p>
+        </div>
+        <div class="footer-note">上方花园 · 音乐广场与各场地可在首页地图查看</div>
+      </div>
+    </div>
+
+    <!-- ==================== 二级页面：表演场地 ==================== -->
+    <div class="screen" id="screen-venues" hidden>
+      <div class="page-sub">
+        <div class="sub-title">表演场地</div>
+        <span class="sub-spacer"></span>
+      </div>
+      <div class="sub-body">
+        <div class="sec-head"><b>活动场地</b><span>点击查看演出时间表与现场状态</span></div>
+        <div id="venue-cards"></div>
+        <div class="footer-note">人群密度与通行时间实时模拟 · 场地与演出均可评分（0–5.0）</div>
+      </div>
+    </div>
+
+    <!-- ==================== 二级页面：商店 ==================== -->
+    <div class="screen" id="screen-shops" hidden>
+      <div class="page-sub">
+        <div class="sub-title">商店</div>
+        <span class="sub-spacer"></span>
+      </div>
+      <div class="sub-body">
+        <div class="sec-head"><b>街区商店</b><span>点击查看定位、价格与实时数据</span></div>
+        <div id="shop-list"></div>
+        <div class="footer-note">商店实时人数 / 订单 / 等待时间模拟 · 支持评分与评价</div>
+      </div>
+    </div>
+
+    <!-- ==================== 我的（个人信息 · 会员码 · 订单） ==================== -->
+    <div class="screen" id="screen-profile" hidden>
+      <div class="page-sub">
+        <div class="sub-title">我的</div>
+        <span class="sub-spacer"></span>
+      </div>
+      <div class="sub-body">
+        <div class="prof-card" id="prof-card">
+          <div class="prof-avatar" id="prof-avatar">♪</div>
+          <div class="prof-info">
+            <div class="prof-name" id="prof-name">徐杨义萌 <span class="prof-badge">Lv.3 · 汾阳乐迷</span></div>
+            <div class="prof-sub" id="prof-sub">同济大学 · 数字人文 · 2024 年加入</div>
+            <div class="prof-bio" id="prof-bio"></div>
+          </div>
+          <button class="prof-edit" id="btn-prof-edit" title="编辑资料">✎</button>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-tile"><div class="v" id="stat-tickets">0</div><div class="k">累计购票</div></div>
+          <div class="stat-tile"><div class="v" id="stat-orders">0</div><div class="k">商店订单</div></div>
+          <div class="stat-tile"><div class="v" id="stat-waiting">0</div><div class="k">待使用</div></div>
+          <div class="stat-tile"><div class="v" id="stat-ratings">0</div><div class="k">我的评价</div></div>
+        </div>
+
+        <div class="member-card">
+          <div class="mc-top">
+            <span class="mc-title">♪ 汾阳路音乐街区 · 会员码</span>
+            <span class="mc-level">Lv.3</span>
+          </div>
+          <div class="mc-main">
+            <div id="member-qr" class="mc-qr"></div>
+            <div class="mc-side">
+              <div class="mc-code" id="member-code">FY 2026 0000</div>
+              <div class="mc-perks">
+                <div>演出票 9.5 折</div>
+                <div>商店预约优先取货</div>
+                <div>每月 1 张音乐市集券</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-head"><b>演出票</b><span id="ticket-orders-count">0 笔</span></div>
+        <div id="ticket-orders" class="order-list"></div>
+        <div class="sec-head"><b>商店订单</b><span id="shop-orders-count">0 笔</span></div>
+        <div id="shop-orders" class="order-list"></div>
+        <div class="footer-note">点击订单卡片查看兑换二维码 · 数据保存在本机 · 演示</div>
+      </div>
+    </div>
+
+    <!-- ==================== 二级界面：活动场地状态 ==================== -->
+    <div class="overlay" id="screen-venue" hidden>
+      <div class="sub-header">
+        <button class="back" data-close="screen-venue">‹</button>
+        <div class="sub-title" id="venue-title">活动场地</div>
+        <span class="sub-spacer"></span>
+      </div>
+      <div class="sub-body">
+        <div class="venue-hero">
+          <span class="hero-glyph" id="venue-glyph">剧</span>
+          <div class="hero-info">
+            <div class="hero-name" id="venue-name"></div>
+            <div class="hero-addr" id="venue-addr"></div>
+            <div class="hero-rate" id="venue-rate"></div>
+          </div>
+        </div>
+        <p class="venue-intro" id="venue-intro"></p>
+
+        <div class="sub-sec">
+          <div class="sec-head"><b>表演时间表</b><span>最近一场已加粗 · 实时倒计时</span></div>
+          <div id="perf-list" class="perf-list"></div>
+        </div>
+
+        <div class="sub-sec">
+          <div class="sec-head"><b>现场状态</b><span>数据实时模拟</span></div>
+          <div class="status-card" id="status-card"></div>
+        </div>
+
+        <div class="sub-sec">
+          <div class="sec-head"><b>附近商店</b><span>点击查看详情与实时数据</span></div>
+          <div id="nearby-shops" class="shop-list"></div>
+        </div>
+
+        <div class="footer-note" style="margin-top:14px">场地与每场演出均可评分（0–5.0），平均分实时更新</div>
+      </div>
+    </div>
+
+    <!-- ==================== 二级界面：购票付款 ==================== -->
+    <div class="overlay" id="screen-ticket" hidden>
+      <div class="sub-header">
+        <button class="back" data-close="screen-ticket">‹</button>
+        <div class="sub-title" id="ticket-title">购票</div>
+        <span class="sub-spacer"></span>
+      </div>
+      <div class="sub-body">
+        <div id="ticket-form">
+          <div id="ticket-poster" class="ticket-poster"></div>
+
+          <div class="tk-meta" id="ticket-meta"></div>
+
+          <div class="sub-sec">
+            <div class="sec-head"><b>选择票档</b><span>每档最多 9 张</span></div>
+            <div id="ticket-tiers"></div>
+          </div>
+
+          <div class="sub-sec">
+            <div class="sec-head"><b>支付方式</b></div>
+            <div id="pay-methods" class="pay-methods"></div>
+          </div>
+
+          <div class="tk-total-row">
+            <span class="tk-total-label">合计</span>
+            <span class="tk-total" id="ticket-total">¥ 0</span>
+          </div>
+          <button class="pay-btn" id="btn-pay">确认支付</button>
+        </div>
+
+        <div id="pay-success" class="pay-success" hidden>
+          <div class="ps-check">✓</div>
+          <div class="ps-title">支付成功</div>
+          <div class="ps-sub">已出票 · 请妥善保管取票码</div>
+          <div class="ps-code" id="ps-code">FY 0000 0000</div>
+          <div class="ps-barcode" id="ps-barcode"></div>
+          <div class="ps-note">演出前 30 分钟凭取票码在入口处换取纸质票入场</div>
+          <button class="pay-btn ghost" id="btn-tk-orders">查看订单</button>
+          <button class="pay-btn ghost" id="btn-done">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 商店弹窗 ==================== -->
+    <div class="modal" id="shop-modal" hidden>
+      <div class="sheet">
+        <div class="sheet-grab"></div>
+        <button class="sheet-close" data-close="shop-modal">✕</button>
+
+        <div class="mini-map-wrap">
+          <svg id="shop-minimap" viewBox="0 0 760 880" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="mini-route" id="mini-route" hidden>
+            <span class="mr-start" id="mr-start">常熟路地铁站</span>
+            <span class="mr-arrow">→</span>
+            <span class="mr-end" id="mr-end"></span>
+            <span class="mr-meta" id="mr-meta"></span>
+            <button id="btn-route-go">开始导航</button>
+          </div>
+          <span class="mini-tag">▲ 店内定位</span>
+          <button class="mini-nav" id="btn-mini-nav" title="路线导航">导航</button>
+          <div class="mini-zoom">
+            <button id="mini-zoom-in" title="放大">＋</button>
+            <button id="mini-zoom-out" title="缩小">－</button>
+          </div>
+        </div>
+
+        <div class="sheet-body">
+          <div class="shop-head">
+            <span class="hero-glyph small" id="shop-glyph">书</span>
+            <div>
+              <div class="hero-name" id="shop-name"></div>
+              <div class="hero-addr" id="shop-addr"></div>
+            </div>
+          </div>
+          <p class="venue-intro" id="shop-intro"></p>
+
+          <div class="live-grid" id="live-grid"></div>
+
+          <div class="sub-sec">
+            <div class="sec-head"><b>预约与购买</b><span>到店自提 · 先预约后支付</span></div>
+            <div id="shop-order-form">
+              <div id="so-items"></div>
+              <div class="so-time" id="so-time"></div>
+              <div class="so-total-row">
+                <span class="tk-total-label">合计</span>
+                <span class="tk-total" id="so-total">¥ 0</span>
+              </div>
+              <button class="pay-btn" id="btn-shop-pay">预约并支付</button>
+            </div>
+            <div id="shop-order-success" class="pay-success" hidden>
+              <div class="ps-check">✓</div>
+              <div class="ps-title">预约成功</div>
+              <div class="ps-sub" id="so-succ-sub"></div>
+              <div class="ps-code" id="so-code">FY 0000 0000</div>
+              <div class="ps-note" id="so-note"></div>
+              <button class="pay-btn ghost" id="btn-so-orders">查看订单</button>
+              <button class="pay-btn ghost" id="btn-so-done">完成</button>
+            </div>
+          </div>
+
+          <div class="sub-sec">
+            <div class="sec-head"><b>附近演出</b><span>距离按步行估算 · 点击查看完整时间表</span></div>
+            <div id="shop-nearby-perf" class="perf-list"></div>
+          </div>
+
+          <div class="sub-sec">
+            <div class="sec-head"><b>评价与打分</b><span>0–5.0 · 实时反馈</span></div>
+            <div id="shop-rating"></div>
+            <div class="reviews" id="shop-reviews"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 订单二维码弹窗 ==================== -->
+    <div class="modal" id="qr-modal" hidden>
+      <div class="sheet qr-sheet">
+        <div class="sheet-grab"></div>
+        <button class="sheet-close" data-close="qr-modal">✕</button>
+        <div class="sheet-body qr-body">
+          <div class="qr-type" id="qr-type">演出票 · 兑换码</div>
+          <div class="qr-title" id="qr-title"></div>
+          <div class="qr-meta" id="qr-meta"></div>
+          <div class="qr-box" id="qr-box">
+            <div id="qr-canvas"></div>
+            <div class="qr-code-text" id="qr-code-text"></div>
+          </div>
+          <div class="qr-note" id="qr-note"></div>
+          <div class="qr-status" id="qr-status"></div>
+          <button class="pay-btn" id="btn-qr-done">完成</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 编辑资料 ==================== -->
+    <div class="overlay" id="screen-profile-edit" hidden>
+      <div class="sub-header">
+        <button class="back" data-close="screen-profile-edit">‹</button>
+        <div class="sub-title">编辑资料</div>
+        <span class="sub-spacer"></span>
+      </div>
+      <div class="sub-body">
+        <div class="pe-head">
+          <div class="pe-avatar" id="pe-avatar">♪</div>
+          <div class="pe-head-tip">选择头像 · 修改昵称与简介</div>
+        </div>
+        <div class="pe-avatars" id="pe-avatars"></div>
+
+        <div class="form-row">
+          <label>昵称</label>
+          <input id="pe-name" maxlength="12" placeholder="输入昵称">
+        </div>
+        <div class="form-row">
+          <label>身份</label>
+          <input id="pe-ident" maxlength="24" placeholder="学校 · 专业">
+        </div>
+        <div class="form-row">
+          <label>简介</label>
+          <textarea id="pe-bio" maxlength="40" rows="2" placeholder="一句话介绍自己"></textarea>
+        </div>
+        <button class="pay-btn" id="btn-pe-save">保存</button>
+      </div>
+    </div>
+
+    <!-- ==================== 编辑工具 ==================== -->
+    <div id="palette" class="palette" hidden></div>
+    <div id="editbar" class="editbar" hidden>
+      <div class="edit-hint" id="edit-hint">点击街区改色 · 拖动标记点调整位置 · 视图自动保存</div>
+      <div class="edit-btns">
+        <button id="btn-export">导出配置</button>
+        <button id="btn-reset" class="danger">重置</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <!-- ==================== 底部标签导航 ==================== -->
+    <nav class="tabbar" id="tabbar">
+      <button class="tab on" data-tab="main"><i>◫</i><span>首页</span></button>
+      <button class="tab" data-tab="project"><i>▤</i><span>历史</span></button>
+      <button class="tab" data-tab="venues"><i>♪</i><span>场地</span></button>
+      <button class="tab" data-tab="shops"><i>◍</i><span>商店</span></button>
+      <button class="tab" data-tab="profile"><i>◉</i><span>我的</span><em class="tab-badge" id="orders-badge" hidden></em></button>
+    </nav>
+  </div>
+</div>
+
+<script src="qrcode.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
