@@ -14,7 +14,11 @@
 
 ## 🖼 截图
 
-（待补充：微信开发者工具模拟器 / 真机预览截图）
+| 首页 · 卫星街区地图 | 场地列表 · 实时密度 | 商店 · 迷你地图导航 | 我的 · 会员码 |
+|---|---|---|---|
+| ![首页](images/screenshots/01-home.jpg) | ![场地](images/screenshots/02-venues.jpg) | ![商店](images/screenshots/03-shop-detail.jpg) | ![我的](images/screenshots/04-profile.jpg) |
+
+> H5 原型在线演示：**[GitHub Pages 预览](https://xutom67-cyber.github.io/fenyang-music-block/)**（微信小程序需在开发者工具中运行）
 
 ## 📦 项目结构
 
