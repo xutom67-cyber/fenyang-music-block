@@ -71,6 +71,29 @@
     </view>
   </block>
 
+  <view class="sec-head"><text class="sh-b">评价与互动</text><text class="sh-s">评分 · 评论 · 回复</text></view>
+  <view class="rate-row">
+    <view class="stars">
+      <text class="star {{rate >= i ? 'on' : ''}}" data-i="{{i}}" wx:for="{{[1,2,3,4,5]}}" wx:key="*this" bindtap="tapStar">★</text>
+    </view>
+    <text class="rate-avg">平均 {{avg}} · {{n}} 人评分</text>
+  </view>
+  <view class="reviews">
+    <view class="rev-item {{item.replyTo ? 'rev-reply' : ''}}" wx:for="{{reviews}}" wx:key="index" data-author="{{item.user}}" bindtap="tapReview">
+      <view class="rev-head">
+        <text class="rev-user">{{item.user}}</text>
+        <text class="rev-at" wx:if="{{item.replyTo}}">回复 @{{item.replyTo}}</text>
+        <text class="rev-stars">{{item.starsStr}}</text>
+      </view>
+      <view class="rev-text">{{item.text}}</view>
+    </view>
+    <view class="footer-note" wx:if="{{!reviews.length}}">还没有评价，来写第一条吧</view>
+  </view>
+  <view class="rate-comment">
+    <input class="rc-input" value="{{cmtInput}}" placeholder="{{cmtPlaceholder}}" maxlength="80" bindinput="onCmtInput" bindconfirm="addCmt" />
+    <view class="rc-btn" bindtap="addCmt">发表</view>
+  </view>
+
   <view class="sec-head"><text class="sh-b">附近演出</text><text class="sh-s">距离按步行估算 · 点击查看</text></view>
   <view class="perf-item" wx:for="{{nearby}}" wx:key="vid" data-vid="{{item.vid}}" bindtap="openVenue">
     <view class="perf-time"><view class="pt-hm">{{item.hm}}</view><view class="pt-day">{{item.label}}</view></view>

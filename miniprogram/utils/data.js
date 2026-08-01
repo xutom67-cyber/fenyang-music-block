@@ -171,7 +171,8 @@ const FY = {
       ratingBase: { avg: 4.8, n: 96 },
       reviews: [
         { user: 'Momo', stars: 5, text: '黑胶角落太棒了，午后阳光配爵士乐，氛围拉满。' },
-        { user: '阿哲', stars: 4, text: '空间很有味道，文创定价略高，但值得一逛。' }
+        { user: '阿哲', stars: 4, text: '空间很有味道，文创定价略高，但值得一逛。' },
+        { user: 'Momo', stars: 5, text: '文创最近上新了联名款，可以再逛逛～', replyTo: '阿哲' }
       ],
       map: { x: 545, y: 470 }
     },

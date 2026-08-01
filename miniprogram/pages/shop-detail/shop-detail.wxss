@@ -69,3 +69,21 @@ page { background: #F4F7F2; }
 }
 .map-toggle .mt-ic { color: #5E9C80; font-size: 26rpx; }
 .map-toggle .mt-arrow { margin-left: auto; color: #9AA49B; font-size: 22rpx; }
+
+/* 评价与互动 */
+.rate-row { display: flex; align-items: center; gap: 18rpx; margin: 16rpx 24rpx 0; }
+.stars { display: flex; gap: 6rpx; }
+.star { font-size: 38rpx; color: #D8DED6; }
+.star.on { color: #E8B23A; }
+.rate-avg { font-size: 22rpx; color: #9AA49B; }
+.reviews { margin: 18rpx 24rpx 0; }
+.rev-item { padding: 16rpx 20rpx; border-radius: 16rpx; background: #FBFCF9; margin-bottom: 12rpx; border: 2rpx solid #F0F4EC; }
+.rev-item.rev-reply { margin-left: 30rpx; border-left: 6rpx solid #D8E6DC; background: #F8FBF6; }
+.rev-head { display: flex; align-items: center; gap: 12rpx; margin-bottom: 6rpx; }
+.rev-user { font-size: 24rpx; font-weight: 700; color: #3A463F; }
+.rev-at { font-size: 21rpx; color: #5E9C80; }
+.rev-stars { margin-left: auto; font-size: 20rpx; color: #E8B23A; }
+.rev-text { font-size: 25rpx; color: #4A5A50; line-height: 1.6; }
+.rate-comment { display: flex; gap: 16rpx; margin: 20rpx 24rpx 0; }
+.rc-input { flex: 1; border: 2rpx solid #E2E8E0; border-radius: 999rpx; padding: 16rpx 28rpx; font-size: 24rpx; color: #2F3F35; background: #F7FAF6; height: 72rpx; }
+.rc-btn { background: #4F8F71; color: #fff; border-radius: 999rpx; padding: 0 34rpx; font-size: 25rpx; font-weight: 700; display: flex; align-items: center; }

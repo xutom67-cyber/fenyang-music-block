@@ -15,6 +15,61 @@ Page({
     this.buildItems();
     this.buildSlots();
     this.buildNearby();
+    this.loadReviews();
+  },
+  /* ===== 评价与互动 ===== */
+  loadReviews() {
+    const s = this.shop;
+    this.ratings = util.load('fy_ratings_v1', { perf: {}, shop: {} });
+    const entry = this.ratings.shop[this.id] || {};
+    const myRate = entry.my || 0;
+    const starsStr = st => '★'.repeat(Math.round(st)) + '☆'.repeat(5 - Math.round(st));
+    const mine = (entry.comments || []).map(c => Object.assign({}, c, { starsStr: starsStr(c.stars) }));
+    const seeds = (s.reviews || []).map(r => Object.assign({}, r, { starsStr: starsStr(r.stars) }));
+    const base = s.ratingBase || { avg: 4.5, n: 10 };
+    const n = base.n + (myRate ? 1 : 0);
+    const avg = ((base.avg * base.n + myRate) / n).toFixed(1);
+    this.setData({
+      rate: myRate, avg: avg, n,
+      reviews: [...mine, ...seeds],
+      cmtInput: '', cmtPlaceholder: '写一句评价（可选）…', replyTo: ''
+    });
+  },
+  tapStar(e) {
+    const v = parseInt(e.currentTarget.dataset.i);
+    this.ratings.shop[this.id] = this.ratings.shop[this.id] || {};
+    this.ratings.shop[this.id].my = v;
+    util.save('fy_ratings_v1', this.ratings);
+    const s = this.shop;
+    const base = s.ratingBase || { avg: 4.5, n: 10 };
+    const n = base.n + 1;
+    const avg = ((base.avg * base.n + v) / n).toFixed(1);
+    this.setData({ rate: v, avg, n });
+    wx.showToast({ title: '已评 ' + v + ' 分', icon: 'none' });
+  },
+  tapReview(e) {
+    const to = e.currentTarget.dataset.author;
+    this.setData({ replyTo: to, cmtPlaceholder: '回复 @' + to + '：' });
+  },
+  onCmtInput(e) { this.setData({ cmtInput: e.detail.value }); },
+  addCmt() {
+    const txt = (this.data.cmtInput || '').trim();
+    if (!txt) { wx.showToast({ title: '先写一句评价吧', icon: 'none' }); return; }
+    const entry = this.ratings.shop[this.id] = this.ratings.shop[this.id] || {};
+    entry.comments = entry.comments || [];
+    const c = { user: '我', stars: entry.my || 4, text: txt, replyTo: this.data.replyTo || '', time: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) };
+    entry.comments.push(c);
+    util.save('fy_ratings_v1', this.ratings);
+    wx.showToast({ title: '评价已发布', icon: 'none' });
+    const starsStr = st => '★'.repeat(Math.round(st)) + '☆'.repeat(5 - Math.round(st));
+    const s = this.shop;
+    const base = s.ratingBase || { avg: 4.5, n: 10 };
+    const n = base.n + (entry.my ? 1 : 0);
+    const avg = ((base.avg * base.n + (entry.my || 0)) / n).toFixed(1);
+    this.setData({
+      reviews: [...(entry.comments.map(c => Object.assign({}, c, { starsStr: starsStr(c.stars) }))), ...((s.reviews || []).map(r => Object.assign({}, r, { starsStr: starsStr(r.stars) })))],
+      cmtInput: '', cmtPlaceholder: '写一句评价（可选）…', replyTo: '', rate: entry.my || 0, avg, n
+    });
   },
   buildShop() {
     const s = this.shop;

@@ -770,6 +770,9 @@ function openShop(id) {
   renderShopOrderForm(id);
   $('#mini-map-wrap').hidden = true;
   $('#map-toggle .mt-arrow').textContent = '▾';
+  shopReplyTo = null;
+  const cmtInput = $('#shop-cmt-input');
+  if (cmtInput) { cmtInput.value = ''; cmtInput.placeholder = '写一句评价（可选）…（点评价可回复）'; }
   minimapZoom = 1;
   minimapCx = calibX(s.map.x, s.map.y);
   minimapCy = calibY(s.map.x, s.map.y);
@@ -832,6 +835,8 @@ function toggleMiniRoute() {
   renderMinimap(currentShop);
 }
 $('#btn-mini-nav').addEventListener('click', toggleMiniRoute);
+bindShopReply();
+bindShopCommentBox();
 $('#map-toggle').addEventListener('click', () => {
   const w = $('#mini-map-wrap');
   w.hidden = !w.hidden;
@@ -1010,11 +1015,43 @@ function renderShopReviews(id) {
   const wrap = $('#shop-reviews');
   if (!mine.length && !s.reviews.length) { wrap.innerHTML = '<div class="footer-note">还没有评价，来写第一条吧</div>'; return; }
   wrap.innerHTML = [...mine, ...s.reviews].map(r =>
-    `<div class="rev-item${r.user === '我' ? ' rev-me' : ''}">` +
+    `<div class="rev-item${r.user === '我' ? ' rev-me' : ''}${r.replyTo ? ' rev-reply' : ''}" data-author="${esc(r.user)}">` +
     `<div class="rev-head"><span class="rev-user">${esc(r.user)}</span>` +
+    (r.replyTo ? `<span class="rev-at">回复 @${esc(r.replyTo)}</span>` : '') +
     `<span class="rev-stars">${'★'.repeat(Math.round(r.stars))}${'☆'.repeat(5 - Math.round(r.stars))}</span></div>` +
-    `<div class="rev-text">${esc(r.text)}${r.time ? `<br><small style="color:#B0B9B0">${esc(r.time)}</small>` : ''}</div></div>`
+    `<div class="rev-text">${esc(r.text)}${r.time ? `<br><small style="color:#B0B9B0">${esc(r.time)}</small>` : ''}</div>` +
+    `<span class="rev-reply-btn">↩ 回复</span></div>`
   ).join('');
+}
+let shopReplyTo = null; // 店铺评价回复对象
+function bindShopReply() {
+  $('#shop-reviews').addEventListener('click', e => {
+    const item = e.target.closest('.rev-item');
+    if (!item) return;
+    shopReplyTo = item.dataset.author;
+    const input = $('#shop-cmt-input');
+    if (input) { input.placeholder = '回复 @' + shopReplyTo + '：'; input.focus(); }
+  });
+}
+function bindShopCommentBox() {
+  const input = $('#shop-cmt-input');
+  const btn = $('#shop-cmt-send');
+  const publish = () => {
+    const txt = input.value.trim();
+    if (!txt) { toast('先写一句评价吧'); return; }
+    const entry = ratings.shop[currentShop] = ratings.shop[currentShop] || {};
+    entry.comments = entry.comments || [];
+    const c = { user: '我', stars: entry.my || 4, text: txt, time: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) };
+    if (shopReplyTo) { c.replyTo = shopReplyTo; shopReplyTo = null; }
+    entry.comments.push(c);
+    saveRatings();
+    input.value = '';
+    input.placeholder = '写一句评价（可选）…（点评价可回复）';
+    renderShopReviews(currentShop);
+    toast('评价已发布，实时生效');
+  };
+  btn.addEventListener('click', publish);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') publish(); });
 }
 
 /* ================= 购票付款 ================= */
@@ -1550,7 +1587,7 @@ function bindRating(container, kind, key, baseAvg, baseN, onChange) {
     `<input type="range" class="rate-slider" min="0" max="5" step="0.1" value="${my == null ? 0 : my}">` +
     `<span class="rate-num">${my == null ? '未评分' : my.toFixed(1)}</span></div>` +
     `<div class="rate-avg">平均 <b>${avgFor(kind, key, base).toFixed(1)}</b> · ${totalN} 人评分</div>` +
-    `<div class="rate-comment"><input placeholder="写一句评价（可选）…"><button>发表</button></div>` +
+    (kind === 'perf' ? `<div class="rate-comment"><input placeholder="写一句评价（可选）…"><button>发表</button></div>` : '') +
     (kind === 'perf' && mine.length ? `<div class="rate-avg" style="color:#5E9C80">我的评价：${esc(mine[mine.length - 1].text)}</div>` : '');
   const stars = container.querySelector('.stars');
   const slider = container.querySelector('.rate-slider');
@@ -1574,18 +1611,23 @@ function bindRating(container, kind, key, baseAvg, baseN, onChange) {
   /* 发表评价 */
   const btn = container.querySelector('.rate-comment button');
   const input = container.querySelector('.rate-comment input');
+  if (btn && input) {
   btn.addEventListener('click', () => {
     const txt = input.value.trim();
     if (!txt) { toast('先写一句评价吧'); return; }
     const entry = ratings[kind][key] = ratings[kind][key] || {};
     entry.comments = entry.comments || [];
-    entry.comments.push({ user: '我', stars: entry.my || 4, text: txt, time: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) });
+    const c = { user: '我', stars: entry.my || 4, text: txt, time: new Date().toLocaleString('zh-CN', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) };
+    if (kind === 'shop' && shopReplyTo) { c.replyTo = shopReplyTo; shopReplyTo = null; input.placeholder = '写一句评价（可选）…'; }
+    entry.comments.push(c);
     saveRatings();
     input.value = '';
     toast('评价已发布，实时生效');
     if (kind === 'shop') renderShopReviews(key);
     else bindRating(container, kind, key, baseAvg, baseN, onChange); // perf: 重绘行内我的评价
   });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
+  }
 }
 
 /* ================= Toast ================= */

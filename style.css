@@ -1019,3 +1019,24 @@ a.edit-toggle { display: inline-flex; align-items: center; text-decoration: none
 .map-toggle .mt-ic { color: #5E9C80; font-size: 13px; }
 .map-toggle .mt-arrow { margin-left: auto; color: #9AA49B; font-size: 11px; }
 .sheet-body .mini-map-wrap { margin-top: 12px; height: 210px; border-radius: 14px; }
+
+/* 店铺评价：回复互动 */
+.rev-item { position: relative; cursor: pointer; }
+.rev-item:hover { background: #FAFCF8; }
+.rev-at { color: #5E9C80; font-size: 11px; margin-right: 6px; }
+.rev-reply { margin-left: 26px; border-left: 2.5px solid #D8E6DC; padding-left: 10px; background: #F9FBF8; border-radius: 0 8px 8px 0; }
+.rev-reply-btn { position: absolute; right: 10px; top: 8px; font-size: 10.5px; color: #9AA49B; background: #EFF4ED; padding: 2px 8px; border-radius: 999px; }
+.rev-reply .rev-reply-btn { right: 8px; }
+.rev-reply .rev-head { padding-right: 52px; }
+.rev-item .rev-text { padding-right: 46px; }
+
+/* 店铺评价输入行（列表下方） */
+.sheet-body .rate-comment { display: flex; gap: 10px; margin-top: 14px; }
+.rate-comment input {
+  flex: 1; border: 1.4px solid #E2E8E0; border-radius: 999px; padding: 10px 16px;
+  font-size: 12px; color: #2F3F35; background: #F7FAF6; min-width: 0;
+}
+.rate-comment button {
+  background: #4F8F71; color: #fff; border: none; border-radius: 999px;
+  padding: 0 20px; font-size: 12.5px; font-weight: 700; cursor: pointer; flex-shrink: 0;
+}
