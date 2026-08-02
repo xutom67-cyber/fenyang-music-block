@@ -1402,9 +1402,18 @@ if (!member) {
   localStorage.setItem(LS_MEMBER, JSON.stringify(member));
 }
 const LS_PROF = 'fy_profile_v1';
+const NICK_POOL = ['夜航西飞', '弄堂琴师', '梧桐树下', '黑胶旅人', '半音阶先生', '老克勒', '爵士猫', '汾阳路的风', '谱架小满', '旧唱片收藏家', '音阶漫步者', '复调小姐'];
+function pickNick() {
+  const saved = loadJSON(LS_NICK, null);
+  if (saved) return saved;
+  const n = NICK_POOL[Math.floor(Math.random() * NICK_POOL.length)];
+  localStorage.setItem(LS_NICK, JSON.stringify(n));
+  return n;
+}
+const LS_NICK = 'fy_nick_v1';
 let profile = loadJSON(LS_PROF, null);
 if (!profile) {
-  profile = { name: '徐杨义萌', ident: '同济大学 · 数字人文', bio: '音乐街区的常客，喜欢爵士与老上海旋律。', avatar: 0 };
+  profile = { name: pickNick(), ident: '同济大学 · 数字人文', bio: '音乐街区的常客，喜欢爵士与老上海旋律。', avatar: 0 };
   localStorage.setItem(LS_PROF, JSON.stringify(profile));
 }
 const AVATARS = [
